@@ -1,13 +1,14 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.models import update_last_login
+from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers, generics 
 from .models import CustomUser
 
+User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username','email']
-
+        fields = ['username','email','first_name','last_name','date_of_birth','pk']
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,18 +35,18 @@ class UserLoginSerializer(serializers.Serializer):
     def validate(self,data):
         email = data["email"]
         password = data["password"]
-        user = authenticate(email=email,password=password)
-        if user is None:
-            raise serializers.ValidationError(
-                'A user with this email and password is not found.'
-            )
-        try:
-            update_last_login(None,user)
-        except CustomUser.DoesNotExist:
-            raise serializers.ValidationError(
-                'User with given email and password does not exists'
-            )
-        return user
+        if email and password:
+            user = authenticate(request=self.context.get('request'),
+                                email=email,password=password)
+            if not user:
+                msg = _('Unable to log in with provided credentials.')
+                raise serializers.ValidationError(msg, code='authorization')
+        else:
+            msg = _('Must include username and password.')
+            raise serializers.ValidationError(msg, code='authorization')
+        
+        data['user'] = user
+        return data
     
 
 
