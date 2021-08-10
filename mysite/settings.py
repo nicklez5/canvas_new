@@ -125,7 +125,9 @@ STATIC_URL = '/static/'
 SITE_ID = 1
 AUTH_USER_MODEL = 'users.CustomUser'
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ]
 }
