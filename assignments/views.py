@@ -43,6 +43,12 @@ class AssignmentDetail(APIView):
 class AssignmentUpdate(APIView):
     permission_classes = [IsAdminUser]
 
+    def get_object(self, pk):
+        try:
+            return Assignment.objects.get(pk=pk)
+        except Assignment.DoesNotExist:
+            raise Http404
+
     def put(self, request, pk, format=None):
         assignment = self.get_object(pk)
         serializer = SerializeAssignment(assignment, data=request.data)
@@ -54,6 +60,12 @@ class AssignmentUpdate(APIView):
 class AssignmentDelete(APIView):
     permission_classes = [IsAdminUser]
 
+    def get_object(self, pk):
+        try:
+            return Assignment.objects.get(pk=pk)
+        except Assignment.DoesNotExist:
+            raise Http404
+    
     def delete(self, request, pk, format=None):
         assignment = self.get_object(pk)
         assignment.delete()

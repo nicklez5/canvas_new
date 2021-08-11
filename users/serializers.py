@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers, generics 
 from .models import CustomUser
 
-User = get_user_model()
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
