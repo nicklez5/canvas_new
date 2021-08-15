@@ -21,7 +21,7 @@ class LecturePost(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
-        return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LectureDetail(APIView):
     permission_classes = [IsAuthenticated]
@@ -39,6 +39,12 @@ class LectureDetail(APIView):
 class LectureUpdate(APIView):
     permission_classes = [IsAdminUser]
 
+    def get_object(self,pk):
+        try:
+            return Lecture.objects.get(pk=pk)
+        except Lecture.DoesNotExist:
+            raise Http404
+
     def put(self,request,pk,format=None):
         lecture = self.get_object(pk)
         serializer = SerializeLecture(lecture,data=request.data)
@@ -50,6 +56,12 @@ class LectureUpdate(APIView):
 class LectureDelete(APIView):
     permission_classes = [IsAdminUser]
 
+    def get_object(self,pk):
+        try:
+            return Lecture.objects.get(pk=pk)
+        except Lecture.DoesNotExist:
+            raise Http404
+            
     def delete(self, request, pk, format=None):
         lecture = self.get_object(pk)
         lecture.delete()
