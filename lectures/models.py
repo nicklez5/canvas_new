@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 class Lecture(models.Model):
     description = models.TextField(blank=True)
     date_created = models.DateTimeField(_('date created'),auto_now_add=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,unique=True)
     image = models.ImageField(upload_to='lecture/%Y/%m/%d',blank=True)
 
     def __str__(self):

@@ -17,13 +17,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
-
+from rest_framework import routers 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
-    path('students/', include('students.urls')),
     path('assignments/', include('assignments.urls')),
     path('lectures/', include('lectures.urls')),
     path('courses/', include('course.urls')),
     path('profiles/',include('profiles.urls')),
+    path('canvas/', include('canvas.urls')),
 ]

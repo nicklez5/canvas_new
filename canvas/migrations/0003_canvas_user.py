@@ -11,12 +11,12 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('profiles', '0001_initial'),
+        ('canvas', '0002_auto_20210819_1150'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
+            model_name='canvas',
             name='user',
             field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),

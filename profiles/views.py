@@ -20,6 +20,7 @@ class ProfileView(APIView):
         profile = self.get_object(pk)
         serializer = SerializeProfile(profile)
         return Response(serializer.data)
+        
 class ProfileUpdate(APIView):
 
     serializer_class = SerializeProfile

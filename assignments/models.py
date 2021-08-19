@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 class Assignment(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,unique=True)
     date_created = models.DateTimeField(auto_now_add=True,null=True,blank=True)
     max_points = models.IntegerField(null=True,blank=True)
     student_points = models.IntegerField(null=True,blank=True)
