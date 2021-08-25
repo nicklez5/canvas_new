@@ -46,9 +46,11 @@ INSTALLED_APPS = [
     'assignments',
     'lectures',
     'canvas',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -77,6 +79,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
+
+CORS_ORIGIN_ALLOW_ALL = True 
 
 
 # Database

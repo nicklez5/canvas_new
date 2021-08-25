@@ -6,6 +6,6 @@ class SerializeCanvas(serializers.ModelSerializer):
     current_course = SerializeCourse(read_only=True,many=False)
     class Meta:
         model = Canvas 
-        fields = ['list_courses','current_course']
+        fields = ['pk','list_courses','current_course']
 
     

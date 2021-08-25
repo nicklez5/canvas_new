@@ -1,12 +1,18 @@
-from django.conf.urls import url , include 
-from rest_framework.routers import DefaultRouter 
-from .views import CoursesViewSet
+from django.urls import path 
+from rest_framework.urlpatterns import format_suffix_patterns 
+from . import views 
 
-
-router = DefaultRouter()
-router.register('course', CoursesViewSet, basename="course")
 
 urlpatterns = [
-    url('',include(router.urls))
+    path('', views.CourseList.as_view()),
+    path('post/', views.CoursePost.as_view()),
+    path('detail/<str:pk>/', views.CourseDetail.as_view()),
+    path('remove_assignment/<str:pk>/', views.CourseRemoveAssignment.as_view()),
+    path('remove_lecture/<str:pk>/', views.CourseRemoveLecture.as_view()),
+    path('change_course_name/<str:pk>/', views.CourseChangeName.as_view()),
+    path('add_lecture/<str:pk>/', views.CourseAddLecture.as_view()),
+    path('add_assignment/<str:pk>/',views.CourseAddAssignment.as_view()),
+    path('add_student/<str:pk>/',views.CourseAddStudent.as_view()),
+    path('remove_student/<str:pk>/',views.CourseRemoveStudent.as_view()), 
 
 ]

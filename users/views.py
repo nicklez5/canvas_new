@@ -12,16 +12,6 @@ from rest_framework.authtoken.models import Token
 from .models import CustomUser 
 from .serializers import UserSerializer, UserLoginSerializer, RegisterSerializer
 
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-def apiOverview(request):
-    api_urls = {
-        'List': '/list/',
-        'Detail View': '/detail/<str:pk>/',
-        'Register': '/register/',
-        'Login': '/login/',
-    }
-    return Response(api_urls)
 
 
 class UserList(APIView):

@@ -7,7 +7,17 @@ from rest_framework import status, viewsets
 from course.serializers import SerializeCourse
 from .serializers import SerializeCanvas
 from .models import Canvas 
-from course.models import Course 
+from course.models import Course
+class CanvasList(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = SerializeCanvas
+
+    def get(self,request,format=None):
+        canvas = Canvas.objects.all()
+        serializer = self.serializer_class(canvas,many=True)
+        return Response(serializer.data)
+
+    
 class CanvasView(APIView):
     serializer_class = SerializeCanvas
     permission_classes = [IsAuthenticated]
@@ -40,8 +50,11 @@ class CanvasCourseUpdate(APIView):
         if find_course is None:
             return status.HTTP_404_NOT_FOUND
         canvas.list_courses.remove(find_course)
-        serializer = self.serializer_class(canvas)
-        return Response(serializer.data)
+        serializer = self.serializer_class(canvas,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
     def post(self,request,pk,format=None):
         canvas = self.get_object(pk)
@@ -50,8 +63,11 @@ class CanvasCourseUpdate(APIView):
         if find_course is None:
             return status.HTTP_404_NOT_FOUND
         canvas.list_courses.add(find_course)
-        serializer = self.serializer_class(canvas)
-        return Response(serializer.data)
+        serializer = self.serializer_class(canvas,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 class CanvasCourseView(APIView):
     serializer_class = SerializeCanvas
@@ -64,15 +80,18 @@ class CanvasCourseView(APIView):
         except Canvas.DoesNotExist:
             raise status.HTTP_404_NOT_FOUND
 
-    def get(self,request,pk,format=None):
+    def put(self,request,pk,format=None):
         canvas = self.get_object(pk)
         course_name = request.data['name']
         find_course = Course.objects.get(name=course_name)
         if find_course is None:
             return status.HTTP_404_NOT_FOUND
         canvas.current_course = find_course
-        serializer = self.serializer_class(canvas)
-        return Response(serializer.data) 
+        serializer = self.serializer_class(canvas,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
 
 
 

@@ -1,10 +1,23 @@
 from django.shortcuts import render
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response 
 from rest_framework import status 
 from .serializers import SerializeProfile
-from .models import Profile 
+from .models import Profile
+
+class ProfileList(APIView):
+    serializer_class = SerializeProfile
+    permission_classes = [IsAdminUser]
+
+    def get(self,request):
+        queryset = Profile.objects.all()
+        serializer = SerializeProfile(queryset, many=True)
+        return Response(serializer.data)
+    
+
+
+    
 class ProfileView(APIView):
 
     serializer_class = SerializeProfile 
@@ -20,7 +33,7 @@ class ProfileView(APIView):
         profile = self.get_object(pk)
         serializer = SerializeProfile(profile)
         return Response(serializer.data)
-        
+
 class ProfileUpdate(APIView):
 
     serializer_class = SerializeProfile
@@ -34,11 +47,12 @@ class ProfileUpdate(APIView):
     
     def put(self,request,pk,format=None):
         profile = self.get_object(pk)
-        serializer = SerializeProfile(profile, data=request.data)
+        serializer = SerializeProfile(profile,data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        
     
 
 # Create your views here.
