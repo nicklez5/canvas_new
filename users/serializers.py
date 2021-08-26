@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.models import update_last_login
+from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers, generics 
 from .models import CustomUser
@@ -10,6 +11,16 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['username','email','pk','is_staff']
 
+
+class UserChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    def validate_new_password(self,value):
+        validate_password(value)
+        return value
+
+    
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser

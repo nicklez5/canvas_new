@@ -10,7 +10,7 @@ from rest_framework import generics, status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from .models import CustomUser 
-from .serializers import UserSerializer, UserLoginSerializer, RegisterSerializer
+from .serializers import UserChangePasswordSerializer, UserSerializer, UserLoginSerializer, RegisterSerializer
 
 
 
@@ -47,10 +47,8 @@ class RegisterView(APIView):
     
 class UserView(APIView):
 
-    
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
-
 
     def get_object(self,pk):
         try: 
@@ -74,6 +72,29 @@ class UserView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UpdatePassword(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self,pk):
+        try:
+            return CustomUser.objects.get(pk=pk)
+        except CustomUser.DoesNotExist:
+            raise status.HTTP_404_NOT_FOUND
+
+    def put(self,request,pk,format=None):
+        custom_user = self.get_object(pk)
+        serializer = UserChangePasswordSerializer(data=request.data)
+
+        if serializer.is_valid():
+            old_password = serializer.data.get("old_password")
+            if not custom_user.check_password(old_password):
+                return Response({"old_password": ["Wrong password."]},
+                                status=status.HTTP_400_BAD_REQUEST)
+            custom_user.set_password(serializer.data.get("new_password"))
+            custom_user.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     
