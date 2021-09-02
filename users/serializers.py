@@ -22,19 +22,24 @@ class UserChangePasswordSerializer(serializers.Serializer):
 
     
 class RegisterSerializer(serializers.ModelSerializer):
+    password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
     class Meta:
         model = CustomUser
-        fields = ['username','email','password']
+        fields = ['username','email','password', 'password2']
         extra_kwargs = {'password': {'write_only': True}}
 
-    def create(self,validated_data):
+    def save(self):
         user = CustomUser(
-            email = validated_data['email'],
-            username = validated_data['username'],
+            email = self.validated_data['email'],
+            username = self.validated_data['username'],
         )
-        user.set_password(validated_data['password'])
+        password = self.validated_data['password']
+        password2 = self.validated_data['password2']
+        if password != password2:
+            raise serializers.ValidationError({'password': 'Passwords must match.'})
+        user.set_password(password)
         user.save()
-        return user
+        return user 
     
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=255)

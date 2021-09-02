@@ -8,6 +8,8 @@ from rest_framework.authtoken.models import Token
 from .managers import CustomUserManager
 from profiles.models import Profile
 from canvas.models import Canvas 
+
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(db_index=True,max_length=255,unique=True,default='')
     email = models.EmailField(_('email address'), unique=True)
@@ -44,8 +46,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def canvas(self):
         return Canvas.objects.get_or_create(user=self)
 
-# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-# def create_auth_token(sender,instance=None,created=False, **kwargs):
-#     if created:
-#         Token.objects.create(user=instance)
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender,instance=None,created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 # Create your models here.

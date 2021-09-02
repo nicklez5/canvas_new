@@ -36,14 +36,20 @@ class UserLoginView(APIView):
         return Response({"status": status.HTTP_200_OK})
 
 class RegisterView(APIView):
-    serializer_class = RegisterSerializer
-    permission_classes = [AllowAny]
+    
     def post(self,request,format=None):
         reg_serializer = RegisterSerializer(data=request.data)
+        data = {}
         if reg_serializer.is_valid():
-            reg_serializer.save()
-            return Response(reg_serializer.data, status=status.HTTP_201_CREATED)
-        return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            CustomUser = reg_serializer.save()
+            data['response'] = "successfully registered a new user."
+            data['email'] = CustomUser.email
+            data['username'] = CustomUser.username
+            token = Token.objects.get(user=CustomUser).key
+            data['token'] = token
+        else:
+            data = reg_serializer.errors
+        return Response(data)
     
 class UserView(APIView):
 
