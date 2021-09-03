@@ -7,6 +7,7 @@ export class Assignment{
     public student_points: Number;
     public description: string;
     public pk: Number;
+    public file: File;
 }
 
 export class Course{

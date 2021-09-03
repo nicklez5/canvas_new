@@ -8,8 +8,8 @@ import { HomeComponent } from './components/home/home.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { BoardAdminComponent } from './components/board-admin/board-admin.component';
-import { BoardUserComponent } from './components/board-user/board-user.component';
+import { authInterceptorProviders } from './_helpers/auth.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -18,8 +18,7 @@ import { BoardUserComponent } from './components/board-user/board-user.component
     SigninComponent,
     RegisterComponent,
     ProfileComponent,
-    BoardAdminComponent,
-    BoardUserComponent
+
   ],
   imports: [
     BrowserModule,
