@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileDetailComponent } from './components/profile-detail/profile-detail.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SigninComponent } from './components/signin/signin.component'
+import { AuthGuard} from "./shared/auth.guard";
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'signin'},
   { path: 'signin', component: SigninComponent },
   { path: 'home', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'profile', component: ProfileComponent }
+  { path: 'profiles/:pk', component: ProfileDetailComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

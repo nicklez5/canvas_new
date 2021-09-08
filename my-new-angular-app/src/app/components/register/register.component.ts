@@ -1,38 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/_services/auth.service';
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  form: any = {
-    username: null,
-    email: null, 
-    password: null,
-    password2: null
-  };
-  isSuccessful = false;
-  isSignUpFailed = false;
-  errorMessage = '';
-  constructor(private authService: AuthService) { }
+  signupForm: FormGroup;
+
+  constructor(public fb: FormBuilder, public authService: AuthService, public router: Router) {
+    this.signupForm = this.fb.group({
+      username: [''],
+      email: [''],
+      password: [''],
+      password2: ['']
+    })
+  }
 
   ngOnInit(): void {
   }
 
-  onSubmit(): void {
-    const { username, email, password, password2 } = this.form;
-    this.authService.register(username,email,password,password2).subscribe(
-      data => {
-        console.log(data);
-        this.isSuccessful = true;
-        this.isSignUpFailed = false;
-      },
-      err => {
-        this.errorMessage = err.error.message;
-        this.isSignUpFailed = true;
+  registerUser(){ 
+    this.authService.signUp(this.signupForm.value).subscribe((res) => {
+      if(res.result){
+        this.signupForm.reset()
+        this.router.navigate(['signin']);
       }
-    );
+    })
   }
   
 

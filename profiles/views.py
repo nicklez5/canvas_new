@@ -8,7 +8,7 @@ from .models import Profile
 
 class ProfileList(APIView):
     serializer_class = SerializeProfile
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
     def get(self,request):
         queryset = Profile.objects.all()

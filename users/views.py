@@ -11,7 +11,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from .models import CustomUser 
 from .serializers import UserChangePasswordSerializer, UserSerializer, UserLoginSerializer, RegisterSerializer
-
+from rest_framework.authtoken.views import ObtainAuthToken
 
 
 class UserList(APIView):
@@ -23,20 +23,23 @@ class UserList(APIView):
         serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data)
 
-
-class UserLoginView(APIView):
+class CustomAuthToken(ObtainAuthToken):
     serializer_class = UserLoginSerializer
     permission_classes = [AllowAny]
-
-    def post(self,request,*args, **kwargs):
-        login_serializer = UserLoginSerializer(data=request.data)
-        login_serializer.is_valid(raise_exception=True)
-        user = login_serializer.validated_data['user']
-        update_last_login(None,user)
-        return Response({"status": status.HTTP_200_OK})
+    def post(self,request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email
+        })
 
 class RegisterView(APIView):
     
+    permission_classes = [AllowAny]
     def post(self,request,format=None):
         reg_serializer = RegisterSerializer(data=request.data)
         data = {}

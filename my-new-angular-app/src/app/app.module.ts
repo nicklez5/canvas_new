@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { RegisterComponent } from './components/register/register.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { authInterceptorProviders } from './_helpers/auth.interceptor';
+import { AuthInterceptor } from './shared/authconfig.interceptor'
+import { ProfileDetailComponent } from './components/profile-detail/profile-detail.component';
 
 
 @NgModule({
@@ -17,16 +17,19 @@ import { authInterceptorProviders } from './_helpers/auth.interceptor';
     HomeComponent,
     SigninComponent,
     RegisterComponent,
-    ProfileComponent,
+    ProfileDetailComponent,
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     FormsModule
   ],
-  providers: [authInterceptorProviders],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
