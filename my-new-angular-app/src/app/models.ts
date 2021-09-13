@@ -27,6 +27,7 @@ export class Canvas{
 export class Profile{
     constructor(){}
     public pk: Number;
+    public email: string;
     public first_name: string;
     public last_name: string;
     public date_of_birth: Date;

@@ -1,25 +1,28 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HTTP_INTERCEPTORS, HttpHandler, HttpRequest, HttpErrorResponse, HttpInterceptor } from '@angular/common/http';
-import { catchError , filter, take , switchMap } from 'rxjs/operators';
+import { HttpHandler, HttpRequest, HttpInterceptor, HttpErrorResponse, HttpEvent } from '@angular/common/http';
+import { AuthService } from './auth.service';
+import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import { errorMonitor } from 'events';
-import { AuthService } from '../_services/auth.service'
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthInterceptor implements HttpInterceptor{
+  constructor(public authService: AuthService){}
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const authToken = this.authService.getToken();
+    if(authToken == null){
 
-  constructor(private authService: AuthService) { }
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
-    console.log("Interception in Progress");
-    const token = this.authService.getToken();
-    req = req.clone({ 
+    }else{
+      req = req.clone({
         setHeaders: {
-            Authorization: 'Token ' + token 
+            Authorization: "Token " + authToken 
         }
-    });
+      });
+    }
     
-
     return next.handle(req);
+    
   }
 }

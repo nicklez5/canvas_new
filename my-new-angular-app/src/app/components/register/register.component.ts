@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/_services/auth.service';
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from '../../shared/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,8 +10,12 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   signupForm: FormGroup;
-
-  constructor(public fb: FormBuilder, public authService: AuthService, public router: Router) {
+  
+  constructor(
+    public fb: FormBuilder,
+    public authService: AuthService,
+    public router: Router
+  ){
     this.signupForm = this.fb.group({
       username: [''],
       email: [''],
@@ -21,16 +25,18 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  
   }
-
-  registerUser(){ 
-    this.authService.signUp(this.signupForm.value).subscribe((res) => {
+  
+  registerUser() {
+    this.authService.signUp(this.signupForm.get('username')!.value,this.signupForm.get('email')!.value,this.signupForm.get('password')!.value,this.signupForm.get('password2')!.value).subscribe((res) => {
       if(res.result){
         this.signupForm.reset()
         this.router.navigate(['signin']);
       }
     })
   }
+  
   
 
 }

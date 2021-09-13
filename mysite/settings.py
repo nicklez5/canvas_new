@@ -79,11 +79,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
+CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_ALLOW_ALL = False 
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:4200',
-)
 
 
 

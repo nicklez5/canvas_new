@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../app/_services/auth.service';
+import { AuthService } from './shared/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,15 +8,13 @@ import { AuthService } from '../app/_services/auth.service';
 })
 export class AppComponent implements OnInit{
   title="my-new-angular-app"
-  
-
+  profileID: any;
   constructor(public authService: AuthService) {}
 
-  ngOnInit(): void {
-    
-  }
-
   logout(): void {
-    this.authService.doLogout()
+    this.authService.doLogout();
+  }
+  ngOnInit(){
+    this.profileID = this.authService.getPk()
   }
 }

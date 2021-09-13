@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Profile } from 'src/app/models';
-import { AuthService } from './../../_services/auth.service';
+import { AuthService } from './../../shared/auth.service';
+
 @Component({
   selector: 'app-profile-detail',
   templateUrl: './profile-detail.component.html',
@@ -9,17 +10,28 @@ import { AuthService } from './../../_services/auth.service';
 })
 export class ProfileDetailComponent implements OnInit {
   currentUser: Profile;
+  profileID: any;
   constructor(
-    public authService: AuthService,
+    public auth_service: AuthService,
     private actRoute: ActivatedRoute
   ) {
-    let pk = this.actRoute.snapshot.paramMap.get('pk');
-    this.authService.getUserProfile(pk).subscribe(res => {
-      this.currentUser = res.msg;
+    let id = this.actRoute.snapshot.paramMap.get('id');
+    this.auth_service.getUserProfile(id!).subscribe(res => {
+      this.profileID = id;
+      console.log("Entering Profile Detail Component")
+      this.currentUser = {
+        pk: res.pk,
+        first_name: res.first_name,
+        email: res.email,
+        last_name: res.last_name,
+        date_of_birth: res.date_of_birth
+      }
+      
+
     })
   }
+  ngOnInit(){}
 
-  ngOnInit(): void {
-  }
+
 
 }
