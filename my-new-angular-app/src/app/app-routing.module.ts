@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CourseDetailComponent } from './components/course-detail/course-detail.component';
 import { EditProfileDetailComponent } from './components/edit-profile-detail/edit-profile-detail.component';
 import { HomeComponent } from './components/home/home.component';
 import { Home2Component } from './components/home2/home2.component';
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'home2', component: Home2Component },
   { path: 'register', component: RegisterComponent },
   { path: 'profile/:id', component: ProfileDetailComponent, canActivate: [AuthGuard] },
-  { path: 'profile/:id/edit', component: EditProfileDetailComponent, canActivate: [AuthGuard] }
+  { path: 'profile/:id/edit', component: EditProfileDetailComponent, canActivate: [AuthGuard] },
+  { path: 'course/:id', component: CourseDetailComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

@@ -1,4 +1,10 @@
-import { Lecture } from "./lecture";
+export class Lecture{
+    pk: number;
+    description: string; 
+    date_created: Date;
+    name: string;
+    image?: File;
+}
 export class Assignment{
     constructor(){}
     public name: string;
@@ -6,7 +12,7 @@ export class Assignment{
     public max_points: Number;
     public student_points: Number;
     public description: string;
-    public pk: Number;
+    public id: Number;
     public file: File;
 }
 

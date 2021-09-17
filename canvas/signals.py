@@ -16,3 +16,4 @@ def update_canvas(sender, instance, created, **kwargs):
     if created == False:
         instance.canvas.save()
         print('Canvas updated!')
+

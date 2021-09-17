@@ -1,3 +1,10 @@
-<div class="container">
-    Welcome to Admin Home 
-</div>
+<ng-container *ngIf="this.canvas.list_courses">
+    <div *ngFor="let course of this.canvas.list_courses" class="row">
+        <div class="column" [routerLink]="['/course', this.course.pk]" >{{this.course.name}}</div>
+        <button type="button">Delete Course</button>
+    </div>
+    <button type="button">Add Course</button>
+</ng-container>    
+
+
+

@@ -8,6 +8,7 @@ from course.serializers import SerializeCourse
 from .serializers import SerializeCanvas
 from .models import Canvas 
 from course.models import Course
+ 
 class CanvasList(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = SerializeCanvas
@@ -34,6 +35,7 @@ class CanvasView(APIView):
         return Response(serializer.data)
 
 class CanvasCourseUpdate(APIView):
+   
     serializer_class = SerializeCanvas
     permission_classes = [IsAdminUser]
 
@@ -63,6 +65,7 @@ class CanvasCourseUpdate(APIView):
         if find_course is None:
             return status.HTTP_404_NOT_FOUND
         canvas.list_courses.add(find_course)
+        canvas.current_course = find_course
         serializer = self.serializer_class(canvas,data=request.data)
         if serializer.is_valid():
             serializer.save()

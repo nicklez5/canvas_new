@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomUser, Profile } from '../models';
+import { Canvas, Course, CustomUser, Profile } from '../models';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
@@ -97,11 +97,20 @@ export class AuthService {
       catchError(this.handleError)
     );
   }
-  getCanvas(id: string): Observable<any>{
+  getCanvas(id: string){
     let api = `${this.endpoint}/canvas/detail/${id}/`;
-    return this.http.get(api, { headers: this.headers }).pipe(
+    return this.http.get<Canvas>(api).pipe(
       map((res: any) => {
-        return JSON.stringify(res);
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
+  getCourse(id: string){
+    let api = `${this.endpoint}/courses/detail/${id}/`;
+    return this.http.get<Course>(api).pipe(
+      map((res: any) => {
+        return res || {}
       }),
       catchError(this.handleError)
     )

@@ -11,7 +11,7 @@ from .serializers import SerializeCourse
 from lectures.models import Lecture 
 from assignments.models import Assignment
 from profiles.models import Profile 
-
+import django.dispatch 
 
 class CourseList(APIView):
     permission_classes = [IsAuthenticated]
@@ -44,7 +44,7 @@ class CourseDetail(APIView):
     
     def get(self, request, pk, format=None):
         course = self.get_object(pk)
-        serializer = SerializeCourse(data=course)
+        serializer = SerializeCourse(course)
         return Response(serializer.data)
 
     
@@ -167,6 +167,7 @@ class CourseAddAssignment(APIView):
 
 
 class CourseAddStudent(APIView):
+    student_added = django.dispatch.Signal()
     permission_classes = [IsAdminUser]
 
     def get_object(self,pk):
@@ -174,14 +175,20 @@ class CourseAddStudent(APIView):
             return Course.objects.get(pk=pk)
         except Course.DoesNotExist:
             raise Http404
-        
+    def get_object_profile(self,pk):
+        try:
+            return Profile.objects.get(pk=pk)
+        except Profile.DoesNotExist:
+            raise Http404
+    
     def put(self, request, pk, format=None):
         data = request.data
         course = self.get_object(pk)
-        profile_obj = Profile.objects.get(first_name=data["first_name"],last_name=data["last_name"],date_of_birth=data["date_of_birth"])
+        profile_obj = self.get_object_profile(data["pk"])
         if profile_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.profiles.add(profile_obj)
+
         serializer = SerializeCourse(course,data=data)
         if serializer.is_valid():
             serializer.save()
