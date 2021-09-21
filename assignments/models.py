@@ -7,7 +7,7 @@ class Assignment(models.Model):
     max_points = models.IntegerField(null=True,blank=True)
     student_points = models.IntegerField(null=True,blank=True)
     description = models.TextField(max_length=100)
-    file = models.FileField(upload_to='assignments/',null=True)
+    file = models.FileField(upload_to='assignments/',blank=True,null=True)
     def __str__(self):
         return self.name 
 

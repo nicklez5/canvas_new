@@ -64,7 +64,7 @@ class CourseRemoveAssignment(APIView):
         if assignment_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.assignments.remove(assignment_obj)
-        serializer = SerializeCourse(course,data=request.data)
+        serializer = SerializeCourse(data=course)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -158,7 +158,7 @@ class CourseAddAssignment(APIView):
         if assignment_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.assignments.add(assignment_obj)
-        serializer = SerializeCourse(course,data=request.data)
+        serializer = SerializeCourse(data=course.__dict__)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -189,7 +189,7 @@ class CourseAddStudent(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.profiles.add(profile_obj)
 
-        serializer = SerializeCourse(course,data=data)
+        serializer = SerializeCourse(data=course)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -211,7 +211,7 @@ class CourseRemoveStudent(APIView):
         if profile_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.profiles.remove(profile_obj)
-        serializer = SerializeCourse(course,data=request.data)
+        serializer = SerializeCourse(data=course)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

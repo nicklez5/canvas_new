@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Canvas, Course, CustomUser, Profile } from '../models';
+import { Assignment, Canvas, Course, CustomUser, Profile } from '../models';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
@@ -44,7 +44,7 @@ export class AuthService {
         this.getUserProfile(res.user_id).subscribe((res: { pk?: any; email?: any }) => {
           this.currentUser = res;
           console.log(this.currentUser)
-          this.router.navigate(['profile/' + res.pk]);
+          this.router.navigate(['home']);
         })
       })
   }
@@ -115,6 +115,15 @@ export class AuthService {
       catchError(this.handleError)
     )
   }
+  getAssignment(id: string){
+    let api = `${this.endpoint}/assignments/detail/${id}/`;
+    return this.http.get<Assignment>(api).pipe(
+      map((res: any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
 
   handleError(error: HttpErrorResponse){
     let msg = '';
@@ -125,4 +134,44 @@ export class AuthService {
     }
     return throwError(msg);
   }
+  addAssignment(assignment: Assignment){
+    console.log(assignment);
+    let api = `${this.endpoint}/assignments/post/`;
+    return this.http.post<any>(api, assignment,{headers: this.headers})
+  }
+  
+  addAssignment_Course(courseID: number, assignment: Assignment){
+    this.addAssignment(assignment).subscribe((res:any) =>{
+      console.log(res)
+
+    })
+    let api = `${this.endpoint}/courses/add_assignment/${courseID}/`;
+    return this.http.put<any>(api, JSON.stringify(assignment),{ headers: this.headers }).pipe(
+      map((res:any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    );
+  }
+  deleteAssignment(assignment_pk: string){
+    let api = `${this.endpoint}/assignments/delete/${assignment_pk}/`
+    return this.http.delete<any>(api, {headers: this.headers })
+  }
+  deleteAssignment_Course(courseID: number, assignment_pk: string){
+    this.deleteAssignment(assignment_pk).subscribe((res:any) => {
+      console.log(res); 
+    })
+    let api = `${this.endpoint}/courses/remove_assignment/${courseID}/`;
+    this.getAssignment(assignment_pk).subscribe((res:any) =>{
+      return this.http.put<any>(api, JSON.stringify(res),{headers: this.headers }).pipe(
+        map((res:any) => {
+          return res || {}
+        }),
+        catchError(this.handleError)
+      );
+    })
+    
+    
+  }
+  
 }

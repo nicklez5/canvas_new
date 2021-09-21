@@ -15,6 +15,9 @@ import { AddLectureComponent } from './components/add-lecture/add-lecture.compon
 import { AddAssignmentComponent } from './components/add-assignment/add-assignment.component';
 import { CourseDetailComponent } from './components/course-detail/course-detail.component';
 import { Home2Component } from './components/home2/home2.component';
+import { BackbuttonDirective } from './_directives/backbutton.directive';
+import { AssignmentsComponent } from './components/assignments/assignments.component';
+import { EditAssignmentComponent } from './components/edit-assignment/edit-assignment.component';
 
 
 @NgModule({
@@ -30,6 +33,9 @@ import { Home2Component } from './components/home2/home2.component';
     AddAssignmentComponent,
     CourseDetailComponent,
     Home2Component,
+    BackbuttonDirective,
+    AssignmentsComponent,
+    EditAssignmentComponent,
 
   ],
   imports: [

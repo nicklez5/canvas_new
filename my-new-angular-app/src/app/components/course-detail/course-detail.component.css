@@ -1,43 +1,60 @@
-.sidenav{
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 60px;
-    transition: 0.5s;
+body{
+    margin: 10px;
+    font-family: "Times New Roman"
 }
 
-.sidenav a{
-    padding: 8px 8px 8px 32px;
+#box1 {
+    width: 300px;
+    height: 100px;
+    margin: 10px;
+    padding: 10px;
+}
+
+#box1 {
+    background:rgb(221, 126, 126);
+}
+h1 , p{
+    padding: 5px;
+}
+
+#box1 p{
+    white-space: pre;
+    font-size: smaller;
+    font-family: monospace;
+}
+#p3{
+    position: relative;
+    left: 50px;
+    top: -10px;
+    width: 50px;
+    height: 50px;
+    border: none;
+}
+.sidenav{
+    height: 100%;
+    width: 160px;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    background-color: rgb(58, 153, 170);
+    overflow-x: hidden;
+    padding-top: 13%;
+    display: block;
+    margin: auto;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 25px;
-    color: #818181;
+    color: rgb(248, 248, 248);
     display: block;
-    transition: 0.3s;
 }
 
 .sidenav a:hover{
-    color: #f1f1f1;
+    color: black;
 }
-
-.sidenav .closebtn{
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-}
-
-#main{
-    transition: margin-left .5s;
-    padding: 20px;
-}
-
-@media screen and(max-height: 450px){
-    .sidenav { padding-top: 15px;}
+@media screen and (max-height: 450px ){
+    .sidenav{ padding-top: 15px;}
     .sidenav a { font-size: 18px; }
 }

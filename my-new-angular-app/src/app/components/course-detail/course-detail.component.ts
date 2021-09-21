@@ -11,7 +11,8 @@ declare function closeNav(): void;
 })
 
 export class CourseDetailComponent implements OnInit {
-  currentCourse: Course;
+  profileID: any;
+  currentCourse = new Course();
   assignments: Assignment[] = [];
   profiles: Profile[] = [];
   lectures: Lecture[] = [];
@@ -55,16 +56,14 @@ export class CourseDetailComponent implements OnInit {
       }
       this.courseID = id;
       console.log("Entering Course Detail Component")
-      this.currentCourse = {
-        name: res.name,
-        pk: res.pk,
-        profiles: this.profiles,
-        lectures: this.lectures,
-        assignments: this.assignments 
-      }
+      this.currentCourse.name = res.name;
+      this.currentCourse.pk = res.pk;
+      this.currentCourse.profiles = this.profiles;
+      this.currentCourse.lectures = this.lectures;
+      this.currentCourse.assignments = this.assignments;
+      
   })
-  //console.log(this.currentCourse)
-
+  this.profileID = this.auth_service.getPk()
 }
 
   ngOnInit(): void {
