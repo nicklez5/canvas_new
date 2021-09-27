@@ -18,7 +18,7 @@
         <th>{{ x.file }}</th>
         <th *ngIf="this.auth_service.isStaff">
             <button (click)="delete_me(x.id)">Delete</button>
-            <button>Edit</button>
+            <button [routerLink]="['/course',this.courseID,'assignments',x.id,'edit']">Edit</button>
         </th>
     </tr>
 

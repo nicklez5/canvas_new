@@ -51,6 +51,8 @@ export class AddAssignmentComponent implements OnInit {
       file: this.assignmentForm.get('file')!.value
     }
     this.auth_service.addAssignment_Course(this.courseID,this.assignment).subscribe((res:any) => {
+      console.log("Successfully added Assignment")
+      console.log(res)
       this.router.navigate(['/course',this.courseID,'assignments'])
       
     })

@@ -106,6 +106,42 @@ export class AuthService {
       catchError(this.handleError)
     )
   }
+  postCourse(course: Course){
+    let api = `${this.endpoint}/courses/post/`;
+    return this.http.post<Course>(api, course, {headers : this.headers}).pipe(
+      map((res: any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
+  addCourse_Canvas(course: Course, canvasID: any){
+    let api = `${this.endpoint}/canvas/add_course/${canvasID}/`;
+    return this.http.put(api, JSON.stringify(course) , { headers: this.headers}).pipe(
+      map((res: any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
+  deleteMyself_Course(profile_: Profile, courseID: any){
+    let api = `${this.endpoint}/courses/remove_student/${courseID}/`;
+    return this.http.put(api, JSON.stringify(profile_), { headers: this.headers }).pipe(
+      map((res: any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
+  addMyself_Course(profile_: Profile, courseID: any ){
+    let api = `${this.endpoint}/courses/add_student/${courseID}/`;
+    return this.http.put(api, JSON.stringify(profile_), { headers: this.headers }).pipe(
+      map((res: any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
   getCourse(id: string){
     let api = `${this.endpoint}/courses/detail/${id}/`;
     return this.http.get<Course>(api).pipe(
@@ -137,16 +173,15 @@ export class AuthService {
   addAssignment(assignment: Assignment){
     console.log(assignment);
     let api = `${this.endpoint}/assignments/post/`;
-    return this.http.post<any>(api, assignment,{headers: this.headers})
+    return this.http.post<any>(api, JSON.stringify(assignment),{headers: this.headers})
   }
   
   addAssignment_Course(courseID: number, assignment: Assignment){
-    this.addAssignment(assignment).subscribe((res:any) =>{
+    this.addAssignment(assignment).subscribe((res:any) => {
       console.log(res)
-
     })
     let api = `${this.endpoint}/courses/add_assignment/${courseID}/`;
-    return this.http.put<any>(api, JSON.stringify(assignment),{ headers: this.headers }).pipe(
+    return this.http.put<any>(api, assignment,{ headers: this.headers }).pipe(
       map((res:any) => {
         return res || {}
       }),
@@ -163,15 +198,12 @@ export class AuthService {
     })
     let api = `${this.endpoint}/courses/remove_assignment/${courseID}/`;
     this.getAssignment(assignment_pk).subscribe((res:any) =>{
-      return this.http.put<any>(api, JSON.stringify(res),{headers: this.headers }).pipe(
-        map((res:any) => {
-          return res || {}
-        }),
-        catchError(this.handleError)
-      );
-    })
-    
-    
+      return this.http.delete<any>(api, res)
+    })    
+  }
+  delete_Course(pk : string){
+    let api = `${this.endpoint}/courses/delete/${pk}/`
+    return this.http.delete<any>(api, {headers: this.headers})
   }
   
 }

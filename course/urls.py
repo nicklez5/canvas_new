@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.CourseList.as_view()),
     path('post/', views.CoursePost.as_view()),
     path('detail/<str:pk>/', views.CourseDetail.as_view()),
+    path('delete/<str:pk>/', views.CourseDelete.as_view()),
     path('remove_assignment/<str:pk>/', views.CourseRemoveAssignment.as_view()),
     path('remove_lecture/<str:pk>/', views.CourseRemoveLecture.as_view()),
     path('change_course_name/<str:pk>/', views.CourseChangeName.as_view()),

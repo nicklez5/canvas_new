@@ -64,11 +64,9 @@ class CourseRemoveAssignment(APIView):
         if assignment_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.assignments.remove(assignment_obj)
-        serializer = SerializeCourse(data=course)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        course.save()
+        serializer = SerializeCourse(course)
+        return Response(serializer.data)
 
         
 
@@ -89,11 +87,10 @@ class CourseRemoveLecture(APIView):
         if lecture_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.lectures.remove(lecture_obj)
-        serializer = SerializeCourse(course,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        course.save()
+        serializer = SerializeCourse(course)
+        return Response(serializer.data)
+        
 
 class CourseChangeName(APIView):
     permission_classes = [IsAdminUser]
@@ -110,12 +107,11 @@ class CourseChangeName(APIView):
         if course is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course_name = data["name"]
-        course.name = course_name 
-        serializer = SerializeCourse(course,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        course.name = course_name
+        course.save()
+        serializer = SerializeCourse(course)
+        return Response(serializer.data)
+        
 
     
 class CourseAddLecture(APIView):
@@ -135,11 +131,10 @@ class CourseAddLecture(APIView):
         if lecture_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.lectures.add(lecture_obj)
-        serializer = SerializeCourse(course,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        course.save()
+        serializer = SerializeCourse(course)
+        return Response(serializer.data)
+
 
 class CourseAddAssignment(APIView):
     permission_classes = [IsAdminUser]
@@ -152,17 +147,15 @@ class CourseAddAssignment(APIView):
     
     def put(self,request,pk,format=None):
         data = request.data
-        course = self.get_object(pk)
+        course = self.get_object(data["id"])
         assignment_name = data["name"]
         assignment_obj = Assignment.objects.get(name=assignment_name)
         if assignment_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.assignments.add(assignment_obj)
-        serializer = SerializeCourse(data=course.__dict__)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        course.save()
+        serializer = SerializeCourse(course)
+        return Response(serializer.data)
 
 
 
@@ -175,25 +168,17 @@ class CourseAddStudent(APIView):
             return Course.objects.get(pk=pk)
         except Course.DoesNotExist:
             raise Http404
-    def get_object_profile(self,pk):
-        try:
-            return Profile.objects.get(pk=pk)
-        except Profile.DoesNotExist:
-            raise Http404
     
     def put(self, request, pk, format=None):
         data = request.data
         course = self.get_object(pk)
-        profile_obj = self.get_object_profile(data["pk"])
+        profile_obj = Profile.objects.get(first_name=data["first_name"],last_name=data["last_name"],date_of_birth=data["date_of_birth"])
         if profile_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.profiles.add(profile_obj)
-
-        serializer = SerializeCourse(data=course)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        course.save()
+        serializer = SerializeCourse(course)
+        return Response(serializer.data)
 
 class CourseRemoveStudent(APIView):
     permission_classes = [IsAdminUser]
@@ -211,14 +196,24 @@ class CourseRemoveStudent(APIView):
         if profile_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.profiles.remove(profile_obj)
-        serializer = SerializeCourse(data=course)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        course.save()
+        serializer = SerializeCourse(course)
+        return Response(serializer.data)
     
 
+class CourseDelete(APIView):
+    permission_classes = [IsAdminUser]
 
+    def get_object(self,pk):
+        try:
+            return Course.objects.get(pk=pk)
+        except Course.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk , format=None):
+        course = self.get_object(pk)
+        course.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 

@@ -1,7 +1,7 @@
 from django.db import models
 
 class Course(models.Model):
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=40,unique=False)
     lectures = models.ManyToManyField('lectures.Lecture',related_name='lectures', blank=True)
     profiles = models.ManyToManyField('profiles.Profile',related_name='profiles', blank=True)
     assignments = models.ManyToManyField('assignments.Assignment',related_name='assignments', blank=True)
