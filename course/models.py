@@ -5,7 +5,7 @@ class Course(models.Model):
     lectures = models.ManyToManyField('lectures.Lecture',related_name='lectures', blank=True)
     profiles = models.ManyToManyField('profiles.Profile',related_name='profiles', blank=True)
     assignments = models.ManyToManyField('assignments.Assignment',related_name='assignments', blank=True)
-
+    tests = models.ManyToManyField('tests.Test', related_name='tests',blank=True)
     def __str__(self):
         return self.name
     

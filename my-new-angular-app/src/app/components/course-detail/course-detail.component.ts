@@ -47,11 +47,11 @@ export class CourseDetailComponent implements OnInit {
       }
       for(let i = 0 ; i < res.lectures.length ; i++){
         var z = new Lecture()
-        z.pk = res.lectures[i].id
+        z.id = res.lectures[i].id
         z.description = res.lectures[i].description
         z.date_created = res.lectures[i].date_created
         z.name = res.lectures[i].name
-        z.image = res.lectures[i].image
+        z.file = res.lectures[i].file
         this.lectures.push(z)
       }
       this.courseID = id;

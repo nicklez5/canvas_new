@@ -11,6 +11,9 @@ from .serializers import SerializeCourse
 from lectures.models import Lecture 
 from assignments.models import Assignment
 from profiles.models import Profile 
+from tests.models import Test
+from users.models import CustomUser
+from canvas.models import Canvas
 import django.dispatch 
 
 class CourseList(APIView):
@@ -172,9 +175,18 @@ class CourseAddStudent(APIView):
     def put(self, request, pk, format=None):
         data = request.data
         course = self.get_object(pk)
+        user_obj = CustomUser.objects.get(email=data["email"])
+        if user_obj is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         profile_obj = Profile.objects.get(first_name=data["first_name"],last_name=data["last_name"],date_of_birth=data["date_of_birth"])
         if profile_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        student_canvas = Canvas.objects.get(user=user_obj)
+        if student_canvas is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        student_canvas.list_courses.add(course)
+        student_canvas.current_course = course
+        student_canvas.save()
         course.profiles.add(profile_obj)
         course.save()
         serializer = SerializeCourse(course)
@@ -192,9 +204,18 @@ class CourseRemoveStudent(APIView):
     def put(self, request, pk , format=None):
         data = request.data
         course = self.get_object(pk)
+        user_obj = CustomUser.objects.get(email=data["email"])
+        if user_obj is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         profile_obj = Profile.objects.get(first_name=data["first_name"],last_name=data["last_name"],date_of_birth=data["date_of_birth"])
         if profile_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        student_canvas = Canvas.objects.get(user=user_obj)
+        if student_canvas is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        student_canvas.list_courses.remove(course)
+        student_canvas.current_course = None
+        student_canvas.save()
         course.profiles.remove(profile_obj)
         course.save()
         serializer = SerializeCourse(course)
@@ -215,7 +236,47 @@ class CourseDelete(APIView):
         course.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class CourseAddTest(APIView):
+    permission_classes = [IsAdminUser]
 
+    def get_object(self,pk):
+        try:
+            return Course.objects.get(pk=pk)
+        except Course.DoesNotExist:
+            raise Http404
+    
+    def put(self,request,pk,format=None):
+        data = request.data
+        course = self.get_object(pk)
+        test_name = data["name"]
+        test_obj = Test.objects.get(name=test_name)
+        if test_obj is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        course.tests.add(test_obj)
+        course.save()
+        serializer = SerializeCourse(course)
+        return Response(serializer.data)
+
+class CourseRemoveTest(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get_object(self,pk):
+        try:
+            return Course.objects.get(pk=pk)
+        except Course.DoesNotExist:
+            raise Http404
+
+    def put(self,request,pk,format=None):
+        data = request.data
+        course = self.get_object(pk)
+        test_name = data["name"]
+        test_obj = Test.objects.get(name=test_name)
+        if test_obj is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        course.tests.remove(test_obj)
+        course.save()
+        serializer = SerializeCourse(course)
+        return Response(serializer.data)
 
     
 

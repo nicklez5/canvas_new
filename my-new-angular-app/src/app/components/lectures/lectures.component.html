@@ -1,0 +1,24 @@
+<h1>Lectures</h1>
+<hr>
+
+<table id="users">
+    <tr>
+        <th *ngFor = "let column of headers">
+            {{ column }}
+        </th>
+    </tr>
+    <tr *ngFor = "let x of this.lectures">
+        <th>{{ x.id }} </th>
+        <th>{{ x.name }}</th>
+        <th>{{ x.date_created }}</th>
+        <th>{{ x.description }} </th>
+        <th>{{ x.file }} </th>
+        <th *ngIf="this.authService.isStaff">
+            <button (click)="delete_me(x.id)">Delete</button>
+            <button [routerLink]="['/course', this.courseID,'lectures',x.id,'edit']">Edit</button>
+        </th>
+    </tr>
+
+</table> 
+<button *ngIf="this.authService.isStaff" [routerLink]="['/course', this.courseID,'lectures','add']">Add Lecture</button>
+<button Backbutton>Back</button>

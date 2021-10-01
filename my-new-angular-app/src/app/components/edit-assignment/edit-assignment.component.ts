@@ -15,6 +15,7 @@ export class EditAssignmentComponent implements OnInit {
   assignment: Assignment;
   fileToUpload: File | null = null;
   errorMsg: any;
+  date = new Date();
   constructor(
     public fb: FormBuilder,
     public authService: AuthService,
@@ -26,11 +27,19 @@ export class EditAssignmentComponent implements OnInit {
     this.assignmentForm = this.fb.group({
       name : [''],
       max_points: [''],
+      student_points: [''],
       description: [''],
       file: [null]
     })
     this.authService.getAssignment(this.assignmentID).subscribe((res:Assignment) => {
-      
+      this.assignmentForm.setValue({
+        name: res.name,
+        max_points: res.max_points,
+        student_points: res.student_points,
+        description: res.description,
+        file: res.file
+    })
+      console.log(res)
     })
     
   }
@@ -39,7 +48,17 @@ export class EditAssignmentComponent implements OnInit {
     
   }
   editAssignment(): void{
-
+    this.assignment = {
+      id: this.assignmentID,
+      name: this.assignmentForm.get('name')!.value,
+      student_points: this.assignmentForm.get('student_points')!.value,
+      description: this.assignmentForm.get('description')!.value,
+      date_created: this.date,
+      max_points: this.assignmentForm.get('max_points')!.value,
+      file: this.assignmentForm.get('file')!.value
+    }
+    this.authService.editAssignment(this.assignment,this.assignmentID).subscribe()
+    this.router.navigate(['/course',this.courseID,'assignments'])
   }
   uploadFile(event: Event){
     const element = event.currentTarget as HTMLInputElement;

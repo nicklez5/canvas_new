@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'lectures',
     'canvas',
     'corsheaders',
+    'tests'
 ]
 
 MIDDLEWARE = [

@@ -18,6 +18,12 @@ import { Home2Component } from './components/home2/home2.component';
 import { BackbuttonDirective } from './_directives/backbutton.directive';
 import { AssignmentsComponent } from './components/assignments/assignments.component';
 import { EditAssignmentComponent } from './components/edit-assignment/edit-assignment.component';
+import { LecturesComponent } from './components/lectures/lectures.component';
+import { StudentsComponent } from './components/students/students.component';
+import { QuizzesComponent } from './components/quizzes/quizzes.component';
+import { EditLectureDetailComponent } from './components/edit-lecture-detail/edit-lecture-detail.component';
+import { GradesComponent } from './components/grades/grades.component';
+import { AddStudentComponent } from './components/add-student/add-student.component';
 
 
 @NgModule({
@@ -36,6 +42,12 @@ import { EditAssignmentComponent } from './components/edit-assignment/edit-assig
     BackbuttonDirective,
     AssignmentsComponent,
     EditAssignmentComponent,
+    LecturesComponent,
+    StudentsComponent,
+    QuizzesComponent,
+    EditLectureDetailComponent,
+    GradesComponent,
+    AddStudentComponent,
 
   ],
   imports: [

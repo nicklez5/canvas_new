@@ -2,15 +2,21 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddAssignmentComponent } from './components/add-assignment/add-assignment.component';
 import { AddCourseComponent } from './components/add-course/add-course.component';
+import { AddLectureComponent } from './components/add-lecture/add-lecture.component';
+import { AddStudentComponent } from './components/add-student/add-student.component';
 import { AssignmentsComponent } from './components/assignments/assignments.component';
 import { CourseDetailComponent } from './components/course-detail/course-detail.component';
 import { EditAssignmentComponent } from './components/edit-assignment/edit-assignment.component';
+import { EditLectureDetailComponent } from './components/edit-lecture-detail/edit-lecture-detail.component';
 import { EditProfileDetailComponent } from './components/edit-profile-detail/edit-profile-detail.component';
 import { HomeComponent } from './components/home/home.component';
 import { Home2Component } from './components/home2/home2.component';
+import { LecturesComponent } from './components/lectures/lectures.component';
 import { ProfileDetailComponent } from './components/profile-detail/profile-detail.component';
+import { QuizzesComponent } from './components/quizzes/quizzes.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SigninComponent } from './components/signin/signin.component'
+import { StudentsComponent } from './components/students/students.component';
 import { AuthGuard} from "./shared/auth.guard";
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'signin'},
@@ -24,7 +30,13 @@ const routes: Routes = [
   { path: 'course/:id', component: CourseDetailComponent, canActivate: [AuthGuard] },
   { path: 'course/:id/assignments', component: AssignmentsComponent, canActivate: [AuthGuard] },
   { path: 'course/:id/assignments/add', component: AddAssignmentComponent, canActivate: [AuthGuard] },
-  { path: 'course/:id/assignments/:id2/edit',component: EditAssignmentComponent, canActivate: [AuthGuard] }
+  { path: 'course/:id/assignments/:id2/edit',component: EditAssignmentComponent, canActivate: [AuthGuard] },
+  { path: 'course/:id/lectures', component: LecturesComponent, canActivate: [AuthGuard ]},
+  { path: 'course/:id/lectures/add', component: AddLectureComponent, canActivate: [AuthGuard]},
+  { path: 'course/:id/lectures/:id2/edit', component: EditLectureDetailComponent, canActivate: [AuthGuard]},
+  { path: 'course/:id/students', component: StudentsComponent, canActivate: [AuthGuard]},
+  { path: 'course/:id/students/add', component: AddStudentComponent, canActivate: [AuthGuard]},
+  { path: 'course/:id/quizzes', component: QuizzesComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

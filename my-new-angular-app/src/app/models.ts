@@ -1,9 +1,18 @@
+export class Test{
+    id: Number;
+    description: string;
+    date_created: Date;
+    name: string;
+    file: File;
+    max_points: Number;
+    student_points: Number;
+}
 export class Lecture{
-    pk: number;
+    id: number;
     description: string; 
     date_created: Date;
     name: string;
-    image?: File;
+    file: File;
 }
 export class Assignment{
     constructor(){}

@@ -15,5 +15,6 @@ urlpatterns = [
     path('add_assignment/<str:pk>/',views.CourseAddAssignment.as_view()),
     path('add_student/<str:pk>/',views.CourseAddStudent.as_view()),
     path('remove_student/<str:pk>/',views.CourseRemoveStudent.as_view()), 
-
+    path('add_test/<str:pk>/',views.CourseAddTest.as_view()),
+    path('remove_test/<str:pk>/',views.CourseRemoveTest.as_view()),
 ]

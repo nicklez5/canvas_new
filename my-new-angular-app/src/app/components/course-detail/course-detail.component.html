@@ -11,9 +11,9 @@
     <div class="container-flex">
         <div class="sidenav">
             <a [routerLink]="['/course',this.courseID,'assignments']">Assignments</a>
-            <a href="#">Lectures</a>
-            <a href="#">Students</a>
-            <a href="#">Quizzes/Tests</a>
+            <a [routerLink]="['/course',this.courseID, 'lectures']">Lectures</a>
+            <a [routerLink]="['/course',this.courseID,'students']">Students</a>
+            <a [routerLink]="['/course',this.courseID,'quizzes']">Quizzes/Tests</a>
             <a href="#">Discussion</a>
             <a href="#">Grades</a>
             <a [routerLink]="['/profile',this.profileID]">Profile</a>
