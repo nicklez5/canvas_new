@@ -24,6 +24,12 @@ import { QuizzesComponent } from './components/quizzes/quizzes.component';
 import { EditLectureDetailComponent } from './components/edit-lecture-detail/edit-lecture-detail.component';
 import { GradesComponent } from './components/grades/grades.component';
 import { AddStudentComponent } from './components/add-student/add-student.component';
+import { EditQuizzesComponent } from './components/edit-quizzes/edit-quizzes.component';
+import { AddQuizzesComponent } from './components/add-quizzes/add-quizzes.component';
+import { DiscussionComponent } from './components/discussion/discussion.component';
+import { DiscussionViewComponent } from './components/discussion-view/discussion-view.component';
+import { DiscussionAddComponent } from './components/discussion-add/discussion-add.component';
+import { AddMessageComponent } from './components/add-message/add-message.component';
 
 
 @NgModule({
@@ -48,6 +54,12 @@ import { AddStudentComponent } from './components/add-student/add-student.compon
     EditLectureDetailComponent,
     GradesComponent,
     AddStudentComponent,
+    EditQuizzesComponent,
+    AddQuizzesComponent,
+    DiscussionComponent,
+    DiscussionViewComponent,
+    DiscussionAddComponent,
+    AddMessageComponent,
 
   ],
   imports: [

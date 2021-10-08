@@ -14,6 +14,7 @@ from profiles.models import Profile
 from tests.models import Test
 from users.models import CustomUser
 from canvas.models import Canvas
+from thread.models import Thread 
 import django.dispatch 
 
 class CourseList(APIView):
@@ -51,49 +52,8 @@ class CourseDetail(APIView):
         return Response(serializer.data)
 
     
-class CourseRemoveAssignment(APIView):
-    permission_classes = [IsAdminUser]
-    def get_object(self,pk):
-        try:
-            return Course.objects.get(pk=pk)
-        except Course.DoesNotExist:
-            raise Http404
-    
-    def put(self,request,pk,format=None):
-        data = request.data
-        course = self.get_object(pk=pk)
-        assignment_name = data["name"]
-        assignment_obj = Assignment.objects.get(name=assignment_name)
-        if assignment_obj is None:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        course.assignments.remove(assignment_obj)
-        course.save()
-        serializer = SerializeCourse(course)
-        return Response(serializer.data)
-
         
-
-class CourseRemoveLecture(APIView):
-    permission_classes = [IsAdminUser]
-
-    def get_object(self,pk):
-        try:
-            return Course.objects.get(pk=pk)
-        except Course.DoesNotExist:
-            raise Http404
-    
-    def put(self,request,pk,format=None):
-        data = request.data
-        course = self.get_object(pk)
-        lecture_name = data["name"]
-        lecture_obj = Lecture.objects.get(name=lecture_name)
-        if lecture_obj is None:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        course.lectures.remove(lecture_obj)
-        course.save()
-        serializer = SerializeCourse(course)
-        return Response(serializer.data)
-        
+ 
 
 class CourseChangeName(APIView):
     permission_classes = [IsAdminUser]
@@ -129,8 +89,8 @@ class CourseAddLecture(APIView):
     def put(self,request,pk,format=None):
         data = request.data
         course = self.get_object(pk)
-        lecture_name = data["name"]
-        lecture_obj = Lecture.objects.get(name=lecture_name)
+        lecture_id = data["id"]
+        lecture_obj = Lecture.objects.get(id=lecture_id)
         if lecture_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.lectures.add(lecture_obj)
@@ -150,9 +110,9 @@ class CourseAddAssignment(APIView):
     
     def put(self,request,pk,format=None):
         data = request.data
-        course = self.get_object(data["id"])
-        assignment_name = data["name"]
-        assignment_obj = Assignment.objects.get(name=assignment_name)
+        course = self.get_object(pk)
+        assignment_id = data["id"]
+        assignment_obj = Assignment.objects.get(id=assignment_id)
         if assignment_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.assignments.add(assignment_obj)
@@ -248,8 +208,8 @@ class CourseAddTest(APIView):
     def put(self,request,pk,format=None):
         data = request.data
         course = self.get_object(pk)
-        test_name = data["name"]
-        test_obj = Test.objects.get(name=test_name)
+        test_id = data["id"]
+        test_obj = Test.objects.get(pk=test_id)
         if test_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.tests.add(test_obj)
@@ -257,26 +217,28 @@ class CourseAddTest(APIView):
         serializer = SerializeCourse(course)
         return Response(serializer.data)
 
-class CourseRemoveTest(APIView):
-    permission_classes = [IsAdminUser]
-
+class CourseAddThread(APIView):
+    permission_classes = [IsAuthenticated]
     def get_object(self,pk):
         try:
             return Course.objects.get(pk=pk)
         except Course.DoesNotExist:
             raise Http404
-
+    
     def put(self,request,pk,format=None):
         data = request.data
         course = self.get_object(pk)
-        test_name = data["name"]
-        test_obj = Test.objects.get(name=test_name)
-        if test_obj is None:
+        thread_id = data["id"]
+        thread_obj = Thread.objects.get(id=thread_id)
+        if thread_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        course.tests.remove(test_obj)
+        
+        course.threads.add(thread_obj)
         course.save()
         serializer = SerializeCourse(course)
         return Response(serializer.data)
+        
+
 
     
 

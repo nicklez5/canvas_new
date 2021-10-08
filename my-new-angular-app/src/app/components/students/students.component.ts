@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/shared/auth.service';
   styleUrls: ['./students.component.css']
 })
 export class StudentsComponent implements OnInit {
-  headers = ['first_name', 'last_name', 'date_of_birth']
+  headers = ['first_name', 'last_name', 'date_of_birth', 'etc']
   profiles: Profile[] = [];
   courseID: any;
   constructor(
@@ -33,5 +33,14 @@ export class StudentsComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  delete_me(first_name: string, last_name: string, email: string, date_of_birth: Date, pk:string): void{
+    this.authService.removeStudent_Course(
+      first_name,
+      last_name,
+      email,
+      date_of_birth,
+      pk).subscribe({
+        complete() { window.location.reload()}
+      })
+  }
 }

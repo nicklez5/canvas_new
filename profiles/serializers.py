@@ -2,10 +2,10 @@ from rest_framework import serializers
 from django.db import models 
 from .models import Profile 
 class SerializeProfile(serializers.ModelSerializer):
-    email = serializers.CharField(source='user.email')
+    email = serializers.CharField(read_only=True,source='user.email')
     class Meta:
         model = Profile 
-        fields = ('pk','email','first_name','last_name','date_of_birth',)
+        fields = ['pk','email','first_name','last_name','date_of_birth']
 
     def update(self,instance,validated_data):
         instance.first_name = validated_data.get('first_name', instance.first_name)

@@ -42,12 +42,16 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'users',
     'profiles',
+    'message',
+    'thread',
     'course',
     'assignments',
     'lectures',
     'canvas',
     'corsheaders',
     'tests'
+    
+    
 ]
 
 MIDDLEWARE = [

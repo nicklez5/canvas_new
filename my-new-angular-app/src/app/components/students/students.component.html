@@ -12,6 +12,9 @@
         <th>{{x.first_name}}</th>
         <th>{{x.last_name}}</th>
         <th>{{x.date_of_birth}}</th>
+        <th *ngIf="this.authService.isStaff">
+            <button (click)="delete_me(x.first_name,x.last_name,x.email,x.date_of_birth,this.courseID)">Delete</button>
+        </th>
     </tr>
 </table>
 <button *ngIf="this.authService.isStaff" [routerLink]="['/course',this.courseID,'students','add']">Add Student</button>

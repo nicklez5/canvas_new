@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { Assignment, Canvas, Course, Lecture, Profile } from 'src/app/models';
+import { Assignment, Canvas, Course, Lecture, Profile, Test, Thread } from 'src/app/models';
 import { AuthService } from 'src/app/shared/auth.service';
 @Component({
   selector: 'app-add-course',
@@ -16,6 +16,8 @@ export class AddCourseComponent implements OnInit {
   profiles: Profile[] = []
   assignments: Assignment[] = [];
   lectures: Lecture[] = [];
+  tests: Test[] = [];
+  threads: Thread[] = [];
   canvas_pk: any;
   courseForm: FormGroup;
   errorMsg: any;
@@ -54,7 +56,9 @@ export class AddCourseComponent implements OnInit {
       name: this.courseForm.get('name')!.value, 
       lectures: this.lectures,
       assignments: this.assignments,
-      profiles: this.profiles
+      profiles: this.profiles,
+      tests: this.tests,
+      threads: this.threads
     }
     this.auth_service.postCourse(this.course).subscribe((res:any)=>{
       console.log("Posted Course")

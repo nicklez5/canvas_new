@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Assignment, Course, Profile, Lecture } from 'src/app/models';
+import { Assignment, Course, Profile, Lecture, Test, Thread, Message } from 'src/app/models';
 import { AuthService } from 'src/app/shared/auth.service';
 declare function openNav(): void;
 declare function closeNav(): void;
@@ -16,7 +16,8 @@ export class CourseDetailComponent implements OnInit {
   assignments: Assignment[] = [];
   profiles: Profile[] = [];
   lectures: Lecture[] = [];
-  
+  tests: Test[] = [];
+  threads: Thread[] = [];
 
   courseID: any;
   constructor(
@@ -54,6 +55,26 @@ export class CourseDetailComponent implements OnInit {
         z.file = res.lectures[i].file
         this.lectures.push(z)
       }
+      for(let i = 0; i < res.tests.length; i++){
+        var j = new Test()
+        j.id = res.tests[i].id
+        j.description = res.tests[i].description
+        j.date_created = res.tests[i].date_created
+        j.name = res.tests[i].name
+        j.file = res.tests[i].file
+        j.max_points = res.tests[i].max_points
+        j.student_points = res.tests[i].student_points
+        this.tests.push(j)
+      }
+      for(let i = 0; i < res.threads.length; i++){
+        var a = new Thread()
+        a.id = res.threads[i].id
+        a.list_messages = res.threads[i].list_messages 
+        a.last_author = res.threads[i].last_author
+        a.last_description = res.threads[i].last_description
+        a.last_timestamp = res.threads[i].last_timestamp
+        this.threads.push(a)
+      }
       this.courseID = id;
       console.log("Entering Course Detail Component")
       this.currentCourse.name = res.name;
@@ -61,7 +82,8 @@ export class CourseDetailComponent implements OnInit {
       this.currentCourse.profiles = this.profiles;
       this.currentCourse.lectures = this.lectures;
       this.currentCourse.assignments = this.assignments;
-      
+      this.currentCourse.tests = this.tests;
+      this.currentCourse.threads = this.threads;
   })
   this.profileID = this.auth_service.getPk()
 }

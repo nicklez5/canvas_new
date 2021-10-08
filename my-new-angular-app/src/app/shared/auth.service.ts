@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Assignment, Canvas, Course, CustomUser, Lecture, Profile } from '../models';
+import { Assignment, Canvas, Course, CustomUser, Lecture, Message, Profile, Test, Thread } from '../models';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
@@ -98,6 +98,15 @@ export class AuthService {
       catchError(this.handleError)
     );
   }
+  editTest(test: Test, id: string) : Observable<any>{
+    let api = `${this.endpoint}/tests/update/${id}/`;
+    return this.http.put<any>(api, JSON.stringify(test), {headers : this.headers }).pipe(
+      map((res: any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    );
+  }
   editLecture(lecture: Lecture, id: string): Observable<any>{
     let api = `${this.endpoint}/lectures/update/${id}/`;
     return this.http.put<any>(api, JSON.stringify(lecture), { headers : this.headers}).pipe(
@@ -191,6 +200,15 @@ export class AuthService {
       catchError(this.handleError)
     )
   }
+  getTest(id : string){
+    let api = `${this.endpoint}/tests/detail/${id}/`;
+    return this.http.get<Test>(api).pipe(
+      map((res: any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
 
   handleError(error: HttpErrorResponse){
     let msg = '';
@@ -208,11 +226,9 @@ export class AuthService {
   }
   
   addAssignment_Course(courseID: number, assignment: Assignment){
-    this.addAssignment(assignment).subscribe((res:any) => {
-      console.log(res)
-    })
+    this.addAssignment(assignment).subscribe()
     let api = `${this.endpoint}/courses/add_assignment/${courseID}/`;
-    return this.http.put<any>(api, assignment,{ headers: this.headers }).pipe(
+    return this.http.put<any>(api, {"id": assignment.id},{ headers: this.headers }).pipe(
       map((res:any) => {
         return res || {}
       }),
@@ -224,11 +240,9 @@ export class AuthService {
     return this.http.post<any>(api, JSON.stringify(lecture), {headers: this.headers})
   }
   addLecture_Course(courseID: number, lecture: Lecture){
-    this.addLecture(lecture).subscribe((res:any) => {
-      console.log(res)
-    })
+    this.addLecture(lecture).subscribe()
     let api = `${this.endpoint}/courses/add_lecture/${courseID}/`;
-    return this.http.put<any>(api, lecture, { headers: this.headers }).pipe(
+    return this.http.put<any>(api, {"id": lecture.id}, { headers: this.headers }).pipe(
       map((res:any) => {
         return res || {}
       }),
@@ -239,25 +253,9 @@ export class AuthService {
     let api = `${this.endpoint}/lectures/delete/${lecture_pk}/`
     return this.http.delete<any>(api, {headers: this.headers })
   }
-  deleteLecture_Course(courseID: number, lecture_pk: string){
-    this.deleteLecture(lecture_pk).subscribe()
-    let api = `${this.endpoint}/courses/remove_lecture/${courseID}/`;
-    this.getLecture(lecture_pk).subscribe((res:any) => {
-      return this.http.delete<any>(api,res)
-    })
-  }
   deleteAssignment(assignment_pk: string){
     let api = `${this.endpoint}/assignments/delete/${assignment_pk}/`
     return this.http.delete<any>(api, {headers: this.headers })
-  }
-  deleteAssignment_Course(courseID: number, assignment_pk: string){
-    this.deleteAssignment(assignment_pk).subscribe((res:any) => {
-      console.log(res); 
-    })
-    let api = `${this.endpoint}/courses/remove_assignment/${courseID}/`;
-    this.getAssignment(assignment_pk).subscribe((res:any) =>{
-      return this.http.delete<any>(api, res)
-    })    
   }
   delete_Course(pk : string){
     let api = `${this.endpoint}/courses/delete/${pk}/`
@@ -288,6 +286,101 @@ export class AuthService {
       "date_of_birth": date_of_birth
     },
     {headers: this.headers})
+  }
+  addTest(test: Test){
+    let api = `${this.endpoint}/tests/post/`
+    return this.http.post<any>(api, test, {headers: this.headers})
+  }
+  addTest_Course(test:Test, pk: string){
+    this.addTest(test).subscribe((res:any) => {
+      console.log(res)
+    })
+    let api = `${this.endpoint}/courses/add_test/${pk}/`
+    return this.http.put<any>(api,
+      {
+        "id": test.id
+      },
+      {headers: this.headers}).pipe(
+        map((res:any)=>{
+          return res || {}
+        }),
+        catchError(this.handleError)
+      );
+  }
+  removeTest(test_pk: string){
+    let api = `${this.endpoint}/tests/delete/${test_pk}/`
+    return this.http.delete<any>(api, {headers: this.headers})
+  }
+  removeThread(thread_pk : string){
+    let api = `${this.endpoint}/threads/delete/${thread_pk}/`
+    return this.http.delete<any>(api , {headers: this.headers})
+  }
+  addThread(thread: Thread){
+    console.log(thread)
+    let api = `${this.endpoint}/threads/post/`
+    return this.http.post<any>(api, thread, {headers : this.headers}).pipe(
+      map((res:any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
+  updateThreadProfile(thread: Thread, profile: Profile){
+    let api = `${this.endpoint}/threads/add_profile/${thread.id}/`
+    return this.http.put<any>(api, JSON.stringify(profile), {headers: this.headers}).pipe(
+      map((res:any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
+  addMessageThread(thread: Thread, message: Message,pk:string){
+    console.log("Entering add message to thread")
+    console.log(thread)
+
+    let api = `${this.endpoint}/threads/add_message/${pk}/`
+    return this.http.put<any>(api, JSON.stringify(message), {headers : this.headers}).pipe(
+      map((res : any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
+  addThread_Course(thread: Thread, pk:string){
+    let api = `${this.endpoint}/courses/add_thread/${pk}/`
+    return this.http.put<any>(api,JSON.stringify(thread),{headers: this.headers}).pipe(
+        map((res:any) => {
+          return res || {}
+        }),
+        catchError(this.handleError)
+      );
+  }
+  addMessage(message: Message){
+    let api = `${this.endpoint}/messages/post/`
+    return this.http.post<any>(api, message, {headers: this.headers}).pipe(
+      map((res : any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+  }
+  updateMessageProfile(message:Message, profile: Profile){
+    let api = `${this.endpoint}/messages/update_profile/${message.id}/`
+    return this.http.put<any>(api,JSON.stringify(profile),{headers: this.headers}).pipe(
+      map((res:any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    );
+  }
+  getThread(id: string){
+    let api = `${this.endpoint}/threads/detail/${id}/`
+    return this.http.get(api, { headers: this.headers }).pipe(
+      map((res:any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
   }
   
 }

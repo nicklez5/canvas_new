@@ -4,7 +4,7 @@ from django import forms
 class Assignment(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100,unique=False)
-    date_created = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+    date_due = models.DateTimeField(auto_now_add=True,null=True,blank=True)
     max_points = models.IntegerField(null=True,blank=True)
     student_points = models.IntegerField(null=True,blank=True)
     description = models.TextField(max_length=100)

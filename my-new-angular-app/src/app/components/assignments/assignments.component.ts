@@ -47,7 +47,10 @@ export class AssignmentsComponent implements OnInit {
   ngOnInit(): void {
   }
   delete_me(x: any){
-    this.auth_service.deleteAssignment_Course(this.courseID, x)
+    this.auth_service.deleteAssignment(x.toString()).subscribe({
+      complete() {window.location.reload()}
+    })
+    
   }
   edit_me(x: any){
     

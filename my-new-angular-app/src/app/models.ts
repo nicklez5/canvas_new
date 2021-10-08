@@ -1,11 +1,24 @@
+export class Thread{
+    public id: Number;
+    public list_messages: Message[];
+    public last_author: Profile;
+    public last_description: string;
+    public last_timestamp: Date;
+}
+export class Message{
+    public id: Number;
+    public author: Profile;
+    public description: string;
+    public timestamp: Date; 
+}
 export class Test{
-    id: Number;
-    description: string;
-    date_created: Date;
-    name: string;
-    file: File;
-    max_points: Number;
-    student_points: Number;
+    public id: Number;
+    public description: string;
+    public date_due: Date;
+    public name: string;
+    public file: File;
+    public max_points: Number;
+    public student_points: Number;
 }
 export class Lecture{
     id: number;
@@ -17,7 +30,7 @@ export class Lecture{
 export class Assignment{
     constructor(){}
     public name: string;
-    public date_created: Date;
+    public date_due: Date;
     public max_points: Number;
     public student_points: Number;
     public description: string;
@@ -31,6 +44,8 @@ export class Course{
     public lectures: Lecture[];
     public profiles: Profile[];
     public assignments: Assignment[];
+    public tests: Test[];
+    public threads: Thread[];
     public pk: Number;
 }
 export class Canvas{

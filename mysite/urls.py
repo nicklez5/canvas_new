@@ -27,4 +27,6 @@ urlpatterns = [
     path('profiles/',include('profiles.urls')),
     path('canvas/', include('canvas.urls')),
     path('tests/',include('tests.urls')),
+    path('threads/',include('thread.urls')),
+    path('messages/',include('message.urls'))
 ]

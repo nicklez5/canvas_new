@@ -14,8 +14,8 @@
             <a [routerLink]="['/course',this.courseID, 'lectures']">Lectures</a>
             <a [routerLink]="['/course',this.courseID,'students']">Students</a>
             <a [routerLink]="['/course',this.courseID,'quizzes']">Quizzes/Tests</a>
-            <a href="#">Discussion</a>
-            <a href="#">Grades</a>
+            <a [routerLink]="['/course',this.courseID,'discussion']">Discussion</a>
+            <a [routerLink]="['/course',this.courseID,'grades']">Grades</a>
             <a [routerLink]="['/profile',this.profileID]">Profile</a>
         </div>
     </div>
