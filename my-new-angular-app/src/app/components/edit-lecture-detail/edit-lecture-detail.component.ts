@@ -15,7 +15,6 @@ export class EditLectureDetailComponent implements OnInit {
   lecture: Lecture;
   fileToUpload: File | null = null;
   errorMsg: any;
-  date = new Date();
   constructor(
     public fb: FormBuilder,
     public authService: AuthService,
@@ -45,7 +44,6 @@ export class EditLectureDetailComponent implements OnInit {
     this.lecture = {
       id: this.lectureID,
       description: this.lectureForm.get('description')!.value,
-      date_created: this.date,
       name: this.lectureForm.get('name')!.value,
       file: this.lectureForm.get('file')!.value
     }

@@ -8,6 +8,5 @@ urlpatterns = [
     path('detail/<str:pk>/',views.ThreadView.as_view()),
     path('delete/<str:pk>/',views.ThreadDelete.as_view()),
     path('add_message/<str:pk>/',views.ThreadAddMessage.as_view()),
-    path('delete_message/<str:pk>/',views.ThreadRemoveMsg.as_view()),
-    path('add_profile/<str:pk>/',views.ThreadUpdateProfile.as_view())
+    path('delete_message/<str:pk>/',views.ThreadRemoveMsg.as_view())
 ]

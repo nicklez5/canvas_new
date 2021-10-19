@@ -1,1 +1,29 @@
-<p>grades works!</p>
+<table id="users">
+    <tr>
+        <th *ngFor="let column of headers">
+            {{ column }} 
+        </th>
+    </tr>
+    <tr *ngFor = "let x of this.tests">
+        <th>{{ x.id }} </th>
+        <th>{{ x.name }} </th>
+        <th>{{ x.date_due }}</th>
+        <th>{{ x.description }}</th>
+        <th>{{ x.max_points }}</th>
+        <th>{{ x.student_points }}</th>
+        <th>{{ x.file }}</th>
+        <th>{{ x.student_points/x.max_points * 100}} %</th>
+    </tr>
+    <tr *ngFor = "let y of this.assignments">
+        <th>{{ y.id }} </th>
+        <th>{{ y.name }}</th>
+        <th>{{ y.date_due }}</th>
+        <th>{{ y.description }}</th>
+        <th>{{ y.max_points }}</th>
+        <th>{{ y.student_points }}</th>
+        <th>{{ y.file }}</th>
+        <th>{{ y.student_points/y.max_points * 100 }} %</th>
+    </tr>
+    <p id="move">Overall Grade: {{ this.overallGrade_pct }} %</p>
+    <br>
+    <p id="move2">Grade: {{this.grade_str}}</p>

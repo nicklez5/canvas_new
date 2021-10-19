@@ -29,8 +29,9 @@ export class CourseDetailComponent implements OnInit {
       for(let i = 0 ; i < res.assignments.length ; i++){
         var x = new Assignment()
         x.name = res.assignments[i].name
-        x.date_created = res.assignments[i].date_created
+        x.date_due = res.assignments[i].date_due
         x.max_points = res.assignments[i].max_points
+        x.submitter = res.assignments[i].submitter 
         x.student_points = res.assignments[i].student_points
         x.description = res.assignments[i].description
         x.id = res.assignments[i].id
@@ -50,7 +51,6 @@ export class CourseDetailComponent implements OnInit {
         var z = new Lecture()
         z.id = res.lectures[i].id
         z.description = res.lectures[i].description
-        z.date_created = res.lectures[i].date_created
         z.name = res.lectures[i].name
         z.file = res.lectures[i].file
         this.lectures.push(z)
@@ -59,7 +59,8 @@ export class CourseDetailComponent implements OnInit {
         var j = new Test()
         j.id = res.tests[i].id
         j.description = res.tests[i].description
-        j.date_created = res.tests[i].date_created
+        j.date_due = res.tests[i].date_due
+        j.submitter = res.tests[i].submitter
         j.name = res.tests[i].name
         j.file = res.tests[i].file
         j.max_points = res.tests[i].max_points

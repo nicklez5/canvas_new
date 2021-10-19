@@ -38,29 +38,7 @@ class ThreadView(APIView):
         serializer = SerializeThread(thread)
         return Response(serializer.data)
 
-class ThreadUpdateProfile(APIView):
-    permission_classes = [IsAuthenticated]
-    def get_object(self,pk):
-        try:
-            return Thread.objects.get(pk=pk)
-        except Thread.DoesNotExist:
-            raise Http404
 
-    def put(self,request,pk,format=None):
-        data = request.data
-        thread = self.get_object(pk)
-        user_obj = CustomUser.objects.get(email=data["email"])
-        if user_obj is None:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        
-        profile_obj = Profile.objects.get(first_name=data["first_name"],last_name=data["last_name"],date_of_birth=data["date_of_birth"])
-        if profile_obj is None:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        
-        thread.last_author = profile_obj
-        thread.save()
-        serializer = SerializeThread(thread)
-        return Response(serializer.data)
 
 class ThreadPost(APIView):
     permission_classes = [IsAuthenticated]

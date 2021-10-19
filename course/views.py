@@ -209,7 +209,7 @@ class CourseAddTest(APIView):
         data = request.data
         course = self.get_object(pk)
         test_id = data["id"]
-        test_obj = Test.objects.get(pk=test_id)
+        test_obj = Test.objects.get(id=test_id)
         if test_obj is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         course.tests.add(test_obj)

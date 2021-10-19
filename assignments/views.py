@@ -1,7 +1,9 @@
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, parser_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.parsers import FileUploadParser
 from .models import Assignment
 from .serializers import SerializeAssignment
 from django.http import Http404
@@ -20,7 +22,7 @@ def api_assignment_list(request):
 @api_view(['POST'])
 @permission_classes((IsAdminUser, ))
 def api_create_assignment(request):
-
+    
     if request.method == 'POST':
         serializer = SerializeAssignment(data=request.data)
         if serializer.is_valid():
@@ -41,9 +43,12 @@ def api_detail_assignment_view(request,pk):
         serializer = SerializeAssignment(assignment_post)
         return Response(serializer.data)
 
+
+
 @api_view(['PUT', 'POST', ])
 @permission_classes((IsAuthenticated, ))
 def api_update_assignment_view(request, pk):
+    parser_classes = (FileUploadParser,)
     try:
         assignment_post = Assignment.objects.get(pk=pk)
     except Assignment.DoesNotExist:
@@ -59,17 +64,16 @@ def api_update_assignment_view(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'POST':
-        form = AssignmentForm(request.POST, request.FILES) 
-        if form.is_valid():
-            form.save()
-            assignment_post = assignment_post(file=request.FILES['file'])
-            serializer = SerializeAssignment(assignment_post,data=request.data)
-            data = {}
-            if serializer.is_valid():
-                serializer.save()
-                data['response'] = 'uploaded'
-                return Response(data=data)
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+        uploaded_file = request.FILES['file']
+        if(uploaded_file):
+            fs = FileSystemStorage()
+            name = fs.save(uploaded_file.name,uploaded_file)
+            print(name)
+            assignment_post.file = uploaded_file
+            assignment_post.save()
+            return Response(status=status.HTTP_200_OK)
+            
+        return Response(status.HTTP_400_BAD_REQUEST)
     
 @api_view(['DELETE', ])
 @permission_classes((IsAdminUser, ))

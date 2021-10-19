@@ -1,41 +1,42 @@
 export class Thread{
     public id: Number;
     public list_messages: Message[];
-    public last_author: Profile;
+    public last_author: string;
     public last_description: string;
     public last_timestamp: Date;
 }
 export class Message{
     public id: Number;
-    public author: Profile;
+    public author: string;
     public description: string;
     public timestamp: Date; 
 }
 export class Test{
     public id: Number;
+    public submitter: string;
     public description: string;
     public date_due: Date;
     public name: string;
     public file: File;
-    public max_points: Number;
-    public student_points: Number;
+    public max_points: number;
+    public student_points: number;
 }
 export class Lecture{
     id: number;
     description: string; 
-    date_created: Date;
     name: string;
     file: File;
 }
 export class Assignment{
     constructor(){}
-    public name: string;
-    public date_due: Date;
-    public max_points: Number;
-    public student_points: Number;
-    public description: string;
     public id: Number;
+    public submitter: string;
+    public description: string;
+    public date_due: Date;
+    public name: string;
     public file: File;
+    public max_points: number;
+    public student_points: number;
 }
 
 export class Course{

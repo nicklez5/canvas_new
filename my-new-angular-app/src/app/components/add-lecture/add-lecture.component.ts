@@ -14,7 +14,6 @@ export class AddLectureComponent implements OnInit {
   lectureID: number;
   lecture: Lecture;
   errorMsg: any;
-  date = new Date();
   fileToUpload: File | null = null;
   constructor(
     public fb: FormBuilder,
@@ -39,7 +38,6 @@ export class AddLectureComponent implements OnInit {
     this.lecture = {
       id: this.lectureID,
       name: this.lectureForm.get('name')!.value,
-      date_created:  this.date,
       description: this.lectureForm.get('description')!.value,
       file: this.lectureForm.get('file')!.value 
     }

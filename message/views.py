@@ -69,28 +69,6 @@ class MessageDelete(APIView):
         message.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class MessageUpdateProfile(APIView):
-    permission_classes = [IsAuthenticated]
 
-    def get_object(self,pk):
-        try:
-            return Message.objects.get(pk=pk)
-        except Message.DoesNotExist:
-            raise Http404
-    
-    def put(self, request, pk, format=None):
-        data = request.data
-        message = self.get_object(pk)
-        user_obj = CustomUser.objects.get(email=data["email"])
-        if user_obj is None:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        profile_obj = Profile.objects.get(first_name=data["first_name"],last_name=data["last_name"],date_of_birth=data["date_of_birth"])
-        if profile_obj is None:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        message.author = profile_obj
-        message.save()
-        serializer = SerializeMessage(message)
-        return Response(serializer.data)
-        
     
 # Create your views here.

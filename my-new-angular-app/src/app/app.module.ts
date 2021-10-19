@@ -30,6 +30,8 @@ import { DiscussionComponent } from './components/discussion/discussion.componen
 import { DiscussionViewComponent } from './components/discussion-view/discussion-view.component';
 import { DiscussionAddComponent } from './components/discussion-add/discussion-add.component';
 import { AddMessageComponent } from './components/add-message/add-message.component';
+import { SubmitAssignmentComponent } from './components/submit-assignment/submit-assignment.component';
+import { SubmitTestComponent } from './components/submit-test/submit-test.component';
 
 
 @NgModule({
@@ -60,6 +62,8 @@ import { AddMessageComponent } from './components/add-message/add-message.compon
     DiscussionViewComponent,
     DiscussionAddComponent,
     AddMessageComponent,
+    SubmitAssignmentComponent,
+    SubmitTestComponent,
 
   ],
   imports: [

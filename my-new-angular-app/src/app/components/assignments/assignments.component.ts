@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Assignment } from 'src/app/models';
+import { Assignment, Profile } from 'src/app/models';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
@@ -9,22 +9,36 @@ import { AuthService } from 'src/app/shared/auth.service';
   styleUrls: ['./assignments.component.css']
 })
 export class AssignmentsComponent implements OnInit {
-  headers = ["id", "name", "date_created", "max_points","student_points","description","file","etc"]
+  headers = ["id", "name", "date_due", "max_points","student_points","description","file","submitter", "etc", "submit"]
   assignments: Assignment[] = [];
   dictionary = {};
   courseID: any;
+  current_profile = new Profile;
+  submitter: string; 
   constructor(
     public auth_service: AuthService,
     private actRoute: ActivatedRoute,
     private router: Router
   ) { 
     let id = this.actRoute.snapshot.paramMap.get('id')
+    let profile_id = this.auth_service.getPk()
+    this.auth_service.getUserProfile(profile_id!).subscribe((res:any) => {
+      this.current_profile.pk = res.pk
+      this.current_profile.first_name = res.first_name
+      this.current_profile.last_name = res.last_name 
+      
+      this.current_profile.email = res.email
+      this.current_profile.date_of_birth = res.date_of_birth 
+    })
+    
+    this.submitter = this.current_profile.first_name + " " + this.current_profile.last_name  
+    
     this.courseID = id;
     this.auth_service.getCourse(id!).subscribe(res => {
       for(let i = 0; i < res.assignments.length; i++){
         var x = new Assignment()
         x.name = res.assignments[i].name
-        x.date_created = res.assignments[i].date_created
+        x.date_due = res.assignments[i].date_due
         x.max_points = res.assignments[i].max_points
         if(!res.assignments[i].student_points){
           x.student_points = 0
@@ -34,7 +48,14 @@ export class AssignmentsComponent implements OnInit {
         x.description = res.assignments[i].description
         x.id = res.assignments[i].id
         x.file = res.assignments[i].file
-        this.assignments.push(x);
+        x.submitter = res.assignments[i].submitter
+        if(this.auth_service.isStaff){
+          this.assignments.push(x);
+        }else{
+          if(this.submitter == x.submitter || this.submitter == "Jackson Lu"){
+            this.assignments.push(x) 
+          }
+        }
       }
     }) 
       console.log(this.assignments)

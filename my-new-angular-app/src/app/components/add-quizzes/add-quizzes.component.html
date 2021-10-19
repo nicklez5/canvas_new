@@ -14,6 +14,10 @@
             <input type="text" class="form-control" formControlName="description" placeholder="Enter description" required>
         </div>
         <div class="form-group">
+            <label>Date Due</label>
+            <input type="datetime-local" class="form-control" formControlName="date_due" placeholder="Enter Test Due Date" required>
+        </div>
+        <div class="form-group">
             <label for="file">Choose File</label>
             <input type="file" formControlName="file" (change)="uploadFile($event)">
         </div>

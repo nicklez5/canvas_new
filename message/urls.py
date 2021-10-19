@@ -6,7 +6,7 @@ urlpatterns = [
     path('post/',views.MessagePost.as_view()),
     path('detail/<str:pk>/',views.MessageDetail.as_view()),
     path('update/<str:pk>/',views.MessageUpdate.as_view()),
-    path('delete/<str:pk>/',views.MessageDelete.as_view()),
-    path('update_profile/<str:pk>/',views.MessageUpdateProfile.as_view())
+    path('delete/<str:pk>/',views.MessageDelete.as_view())
+    
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

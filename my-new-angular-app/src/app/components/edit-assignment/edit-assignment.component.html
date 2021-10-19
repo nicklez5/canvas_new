@@ -6,6 +6,10 @@
             <input type="text" class="form-control" formControlName="name" placeholder="Enter Assignment name" required>
         </div>
         <div class="form-group">
+            <label>Student Points</label>
+            <input type="number" class="form-control" formControlName="student_points" placeholder="Enter Student Points" required>
+        </div>
+        <div class="form-group">
             <label>Max Points</label>
             <input type="number" class="form-control" formControlName="max_points" placeholder="Enter Max Points" required>
         </div>
@@ -14,8 +18,16 @@
             <input type="text" class="form-control" formControlName="description" placeholder="Enter Description" required>
         </div>
         <div class="form-group">
+            <label>Submitter</label>
+            <input type="text" class="form-control" formControlName="submitter" placeholder="Enter Submitter" required>
+        </div>
+        <div class="form-group">
+            <label>Date Due</label>
+            <input type="datetime" class="form-control" formControlName="date_due" placeholder="Enter Assignment Due Date" required>
+        </div>
+        <div class="form-group">
             <label for="file">Choose File</label>
-            <input type="file" formControlName="file" (change)="uploadFile($event)">
+            <input type="file" (change)="uploadFile($event)">
         </div>
         <button type="submit" class="btn btn-block btn-primary">Submit</button>
     </form>

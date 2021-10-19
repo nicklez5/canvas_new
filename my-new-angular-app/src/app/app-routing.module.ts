@@ -24,6 +24,8 @@ import { QuizzesComponent } from './components/quizzes/quizzes.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SigninComponent } from './components/signin/signin.component'
 import { StudentsComponent } from './components/students/students.component';
+import { SubmitAssignmentComponent } from './components/submit-assignment/submit-assignment.component';
+import { SubmitTestComponent } from './components/submit-test/submit-test.component';
 import { AuthGuard} from "./shared/auth.guard";
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'signin'},
@@ -37,6 +39,7 @@ const routes: Routes = [
   { path: 'course/:id', component: CourseDetailComponent, canActivate: [AuthGuard] },
   { path: 'course/:id/assignments', component: AssignmentsComponent, canActivate: [AuthGuard] },
   { path: 'course/:id/assignments/add', component: AddAssignmentComponent, canActivate: [AuthGuard] },
+  { path: 'course/:id/assignments/:id2/submit', component: SubmitAssignmentComponent, canActivate: [AuthGuard] },
   { path: 'course/:id/assignments/:id2/edit',component: EditAssignmentComponent, canActivate: [AuthGuard] },
   { path: 'course/:id/lectures', component: LecturesComponent, canActivate: [AuthGuard ]},
   { path: 'course/:id/lectures/add', component: AddLectureComponent, canActivate: [AuthGuard]},
@@ -46,6 +49,7 @@ const routes: Routes = [
   { path: 'course/:id/quizzes', component: QuizzesComponent, canActivate: [AuthGuard]},
   { path: 'course/:id/quizzes/add', component: AddQuizzesComponent, canActivate: [AuthGuard]},
   { path: 'course/:id/quizzes/:id2/edit', component: EditQuizzesComponent, canActivate: [AuthGuard]},
+  { path: 'course/:id/quizzes/:id2/submit', component: SubmitTestComponent, canActivate: [AuthGuard]},
   { path: 'course/:id/discussion', component: DiscussionComponent, canActivate: [AuthGuard]},
   { path: 'course/:id/discussion/:id2/view', component: DiscussionViewComponent, canActivate: [AuthGuard]},
   { path: 'course/:id/discussion/add', component: DiscussionAddComponent, canActivate: [AuthGuard]},

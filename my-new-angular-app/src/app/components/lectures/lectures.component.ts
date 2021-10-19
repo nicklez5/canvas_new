@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/shared/auth.service'
   styleUrls: ['./lectures.component.css']
 })
 export class LecturesComponent implements OnInit {
-  headers = ['id', 'name', 'date_created', 'description', 'file', 'etc'] 
+  headers = ['id', 'name', 'description', 'file', 'etc'] 
   lectures: Lecture[] = [];
   courseID: any;
   constructor(
@@ -23,7 +23,6 @@ export class LecturesComponent implements OnInit {
         y.id = res.lectures[i].id
         y.name = res.lectures[i].name
         y.description = res.lectures[i].description
-        y.date_created = res.lectures[i].date_created
         y.file = res.lectures[i].file
         this.lectures.push(y)
       }

@@ -19,21 +19,22 @@ export class DiscussionComponent implements OnInit {
   ) {
     this.courseID = this.actRoute.snapshot.paramMap.get('id')
     
+  }
+
+  ngOnInit(): void {
     this.authService.getCourse(this.courseID).subscribe(res => {
+      console.log(res)
       for(let i = 0; i < res.threads.length; i++){
         var y = new Thread()
         y.id = res.threads[i].id 
         y.list_messages = res.threads.list_messages 
-        
         y.last_author = res.threads[i].last_author
         y.last_description = res.threads[i].last_description
         y.last_timestamp = res.threads[i].last_timestamp
         this.threads.push(y)
+        
       }
     })
-  }
-
-  ngOnInit(): void {
   }
   delete_me(x:any){
     this.authService.removeThread(x.toString()).subscribe({

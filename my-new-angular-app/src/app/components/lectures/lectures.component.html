@@ -10,7 +10,6 @@
     <tr *ngFor = "let x of this.lectures">
         <th>{{ x.id }} </th>
         <th>{{ x.name }}</th>
-        <th>{{ x.date_created }}</th>
         <th>{{ x.description }} </th>
         <th>{{ x.file }} </th>
         <th *ngIf="this.authService.isStaff">

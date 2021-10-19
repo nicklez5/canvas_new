@@ -13,10 +13,10 @@ export class DiscussionAddComponent implements OnInit {
   messageForm: FormGroup;
   messageID: number;
   threadID: number;
-  thread: Thread;
-  profile: Profile;
+  thread = new Thread;
+  profile = new Profile;
   profileID: any;
-  message: Message;
+  message = new Message;
   messages: Message[] = [];
   date = new Date();
   constructor(
@@ -27,7 +27,17 @@ export class DiscussionAddComponent implements OnInit {
   ) {
     this.threadID = 0
     this.messageID = 0 
+    this.messageForm = this.fb.group({
+      description: ['']
+    })
     this.courseID = this.actRoute.snapshot.paramMap.get('id')
+    
+    
+  }
+
+  ngOnInit(): void {
+  }
+  addMessage(): void{
     this.auth_service.getCourse(this.courseID).subscribe(res => {
       
       for(let i = 0; i < res.threads.length; i++){
@@ -36,55 +46,38 @@ export class DiscussionAddComponent implements OnInit {
         }
         this.threadID = this.threadID + 1 
       }
-    })
-    this.profileID = this.auth_service.getPk();
-    this.auth_service.getUserProfile(this.profileID).subscribe(res => {
-      this.profile = {
-        pk : res.pk,
-        email: res.email,
-        first_name: res.first_name,
-        last_name: res.last_name,
-        date_of_birth: res.date_of_birth
-      }
-    })
-    this.messageForm = this.fb.group({
-      description: ['']
-    })
-  }
+      this.profileID = this.auth_service.getPk();
+      this.auth_service.getUserProfile(this.profileID).subscribe(res => {
+        this.profile = {
+          pk : res.pk,
+          email: res.email,
+          first_name: res.first_name,
+          last_name: res.last_name,
+          date_of_birth: res.date_of_birth
+        }
+        this.message = {
+          id: this.messageID,
+          author: this.profile.first_name + " " + this.profile.last_name,
+          description: this.messageForm.get('description')!.value,
+          timestamp: this.date
+        }
+        this.messages.push(this.message)
+        this.auth_service.addMessage(this.message).subscribe()
+        this.thread = {
+          id: this.threadID,
+          list_messages: this.messages,
+          last_author: this.profile.first_name + " " + this.profile.last_name,
+          last_description: this.messageForm.get('description')!.value,
+          last_timestamp: this.date
+        }
+        this.auth_service.addThread(this.thread).subscribe()
+        this.auth_service.addThread_Course(this.thread, this.courseID).subscribe({
+          complete() {history.back()}
+        })
 
-  ngOnInit(): void {
-  }
-  addMessage(): void{
-    
-    this.message = {
-      id: this.messageID,
-      author: this.profile,
-      description: this.messageForm.get('description')!.value,
-      timestamp: this.date
-    }
-    this.auth_service.addMessage(this.message).subscribe()
-    this.auth_service.updateMessageProfile(this.message, this.profile).subscribe( res => {
-      console.log(res) 
+      })
+
     })
-    
-    
-    this.thread = {
-      id: this.threadID,
-      list_messages: this.messages,
-      last_author: this.profile,
-      last_description: this.messageForm.get('description')!.value,
-      last_timestamp: this.date
-    }
-    
-    //console.log(this.thread)
-    //console.log(this.courseID)
-    this.auth_service.addThread(this.thread).subscribe()
-    this.auth_service.updateThreadProfile(this.thread, this.profile).subscribe()
-    this.auth_service.addMessageThread(this.thread, this.message,this.threadID.toString()).subscribe(res => {
-      console.log(res)
-    })
-    this.auth_service.addThread_Course(this.thread, this.courseID).subscribe({
-      complete() {history.back()}
-    })
+
   }
 }

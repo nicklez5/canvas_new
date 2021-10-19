@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { Assignment } from 'src/app/models';
+import { Assignment, Profile } from 'src/app/models';
 import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
@@ -14,8 +14,9 @@ export class AddAssignmentComponent implements OnInit {
   assignmentForm: FormGroup;
   assignmentID: number;
   assignment: Assignment;
+  current_profile = new Profile;
+  profile_string: string 
   errorMsg: any;
-  date = new Date();
   fileToUpload: File | null = null;
   constructor(
     public fb: FormBuilder,
@@ -23,39 +24,73 @@ export class AddAssignmentComponent implements OnInit {
     private actRoute: ActivatedRoute,
     public router: Router
   ) { 
-    let id = this.actRoute.snapshot.paramMap.get('id')
-    this.courseID = id;
-    this.auth_service.getCourse(id!).subscribe(res => {
-      console.log(res.assignments.length)
-      this.assignmentID = res.assignments.length + 1
-    })
     this.assignmentForm = this.fb.group({
       name: [''],
       max_points: [''],
       description: [''],
+      date_due: [''],
+      submitter: [this.profile_string],
       file: [null]
     })
   }
 
   ngOnInit(): void {
-  }
-  addAssignment(): void{
-    console.log("Adding Assignment")
-    this.assignment = {
-      id: this.assignmentID,
-      name: this.assignmentForm.get('name')!.value,
-      date_created : this.date,
-      max_points: this.assignmentForm.get('max_points')!.value,
-      student_points: 0,
-      description: this.assignmentForm.get('description')!.value,
-      file: this.assignmentForm.get('file')!.value
-    }
-    this.auth_service.addAssignment_Course(this.courseID,this.assignment).subscribe((res:any) => {
-      console.log("Successfully added Assignment")
-      console.log(res)
-      this.router.navigate(['/course',this.courseID,'assignments'])
+    let id = this.actRoute.snapshot.paramMap.get('id')
+    let profile_id = this.auth_service.getPk()
+    
+    this.auth_service.getUserProfile(profile_id!).subscribe(res => {
+      this.current_profile = {
+        first_name: res.first_name,
+        last_name: res.last_name,
+        pk: res.pk,
+        email: res.email,
+        date_of_birth: res.date_of_birth 
+      }
+      this.profile_string = this.current_profile.first_name + " " + this.current_profile.last_name 
+      
+      this.courseID = id;
+      this.auth_service.getCourse(id!).subscribe(res => {
+        console.log(res.assignments.length)
+        this.assignmentID = res.assignments.length + 1
+      })
+      this.assignmentForm = this.fb.group({
+        name: [''],
+        max_points: [''],
+        description: [''],
+        date_due: [''],
+        submitter: [this.profile_string],
+        file: [null]
+      })
       
     })
+    
+    
+    
+  }
+  addAssignment(): void{
+    let id1 = this.actRoute.snapshot.paramMap.get('id')
+    console.log("Adding Assignment")
+    this.auth_service.getCourse(id1!).subscribe(res => {
+      console.log(res.assignments.length)
+      this.assignmentID = res.assignments.length + 1
+      this.assignment = {
+        id: this.assignmentID,
+        name: this.assignmentForm.get('name')!.value,
+        date_due : this.assignmentForm.get('date_due')!.value,
+        max_points: this.assignmentForm.get('max_points')!.value,
+        student_points: 0,
+        description: this.assignmentForm.get('description')!.value,
+        file: this.assignmentForm.get('file')!.value,
+        submitter: this.assignmentForm.get('submitter')!.value 
+      }
+      this.auth_service.addAssignment_Course(this.courseID,this.assignment).subscribe((res:any) => {
+        console.log("Successfully added Assignment")
+        console.log(res)
+        this.router.navigate(['/course',this.courseID,'assignments'])
+        
+      })
+    })
+    
     
   }
   uploadFile(event: Event){
@@ -64,6 +99,15 @@ export class AddAssignmentComponent implements OnInit {
     if(fileList){
       console.log("FileUpload -> files", fileList)
     }
+  }
+  private formatDate(date: any){
+    const d = new Date(date)
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+    if(month.length < 2) month = '0' + month;
+    if(day.length < 2) day = '0' + day;
+    return [year,month,day].join('-');
   }
 }
 

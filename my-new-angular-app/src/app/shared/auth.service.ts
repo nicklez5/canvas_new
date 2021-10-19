@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   endpoint: string = 'http://127.0.0.1:8000';
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
+  headers = new HttpHeaders().set('Content-Type', 'application/json'); 
   currentUser = {}
   constructor(
     private http: HttpClient,
@@ -90,8 +90,9 @@ export class AuthService {
     )
   }
   editAssignment(assignment: Assignment, id: string): Observable<any>{
+    console.log(assignment)
     let api = `${this.endpoint}/assignments/update/${id}/`;
-    return this.http.put<any>(api, JSON.stringify(assignment), {headers: this.headers}).pipe(
+    return this.http.put<any>(api, assignment,{headers : this.headers}).pipe(
       map((res:any) => {
         return res || {}
       }),
@@ -222,7 +223,7 @@ export class AuthService {
   addAssignment(assignment: Assignment){
     console.log(assignment);
     let api = `${this.endpoint}/assignments/post/`;
-    return this.http.post<any>(api, JSON.stringify(assignment),{headers: this.headers})
+    return this.http.post<any>(api, assignment,{headers: this.headers})
   }
   
   addAssignment_Course(courseID: number, assignment: Assignment){
@@ -288,14 +289,13 @@ export class AuthService {
     {headers: this.headers})
   }
   addTest(test: Test){
+    console.log(test)
     let api = `${this.endpoint}/tests/post/`
     return this.http.post<any>(api, test, {headers: this.headers})
   }
-  addTest_Course(test:Test, pk: string){
-    this.addTest(test).subscribe((res:any) => {
-      console.log(res)
-    })
-    let api = `${this.endpoint}/courses/add_test/${pk}/`
+  addTest_Course(courseID: number, test:Test){
+    this.addTest(test).subscribe()
+    let api = `${this.endpoint}/courses/add_test/${courseID}/`
     return this.http.put<any>(api,
       {
         "id": test.id
@@ -325,15 +325,7 @@ export class AuthService {
       catchError(this.handleError)
     )
   }
-  updateThreadProfile(thread: Thread, profile: Profile){
-    let api = `${this.endpoint}/threads/add_profile/${thread.id}/`
-    return this.http.put<any>(api, JSON.stringify(profile), {headers: this.headers}).pipe(
-      map((res:any) => {
-        return res || {}
-      }),
-      catchError(this.handleError)
-    )
-  }
+  
   addMessageThread(thread: Thread, message: Message,pk:string){
     console.log("Entering add message to thread")
     console.log(thread)
@@ -348,7 +340,7 @@ export class AuthService {
   }
   addThread_Course(thread: Thread, pk:string){
     let api = `${this.endpoint}/courses/add_thread/${pk}/`
-    return this.http.put<any>(api,JSON.stringify(thread),{headers: this.headers}).pipe(
+    return this.http.put<any>(api,{"id": thread.id},{headers: this.headers}).pipe(
         map((res:any) => {
           return res || {}
         }),
@@ -364,15 +356,7 @@ export class AuthService {
       catchError(this.handleError)
     )
   }
-  updateMessageProfile(message:Message, profile: Profile){
-    let api = `${this.endpoint}/messages/update_profile/${message.id}/`
-    return this.http.put<any>(api,JSON.stringify(profile),{headers: this.headers}).pipe(
-      map((res:any) => {
-        return res || {}
-      }),
-      catchError(this.handleError)
-    );
-  }
+  
   getThread(id: string){
     let api = `${this.endpoint}/threads/detail/${id}/`
     return this.http.get(api, { headers: this.headers }).pipe(
@@ -381,6 +365,14 @@ export class AuthService {
       }),
       catchError(this.handleError)
     )
+  }
+  
+  addAssignment_File( id:string, fileToUpload:File){
+    console.log(fileToUpload.name)
+    const formData: FormData = new FormData();
+    formData.append('file',fileToUpload,fileToUpload.name);
+    let api = `${this.endpoint}/assignments/update/${id}/`;
+    return this.http.post<any>(api, formData).subscribe()
   }
   
 }

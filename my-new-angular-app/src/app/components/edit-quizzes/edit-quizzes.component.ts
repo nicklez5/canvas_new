@@ -15,7 +15,7 @@ export class EditQuizzesComponent implements OnInit {
   test: Test;
   fileToUpload: File | null = null;
   errorMsg: any;
-  date = new Date();
+  
   constructor(
     public fb: FormBuilder,
     public authService: AuthService,
@@ -29,6 +29,8 @@ export class EditQuizzesComponent implements OnInit {
       description: [''],
       max_points: [''],
       student_points: [''],
+      date_due: [''],
+      submitter: [''],
       file: [null]
     })
     this.authService.getTest(this.testID).subscribe((res:Test) => {
@@ -36,7 +38,9 @@ export class EditQuizzesComponent implements OnInit {
         name: res.name,
         max_points: res.max_points,
         student_points: res.student_points,
+        date_due: res.date_due,
         description: res.description,
+        submitter: res.submitter,
         file: res.file
     })
 
@@ -49,11 +53,12 @@ export class EditQuizzesComponent implements OnInit {
     this.test = {
       id: this.testID,
       description: this.testForm.get('description')!.value,
-      date_created: this.date,
+      date_due: this.testForm.get('date_due')!.value,
       name: this.testForm.get('name')!.value,
       student_points: this.testForm.get('student_points')!.value,
       max_points: this.testForm.get('max_points')!.value,
-      file: this.testForm.get('file')!.value 
+      file: this.testForm.get('file')!.value,
+      submitter: this.testForm.get('submitter')!.value 
     }
     this.authService.editTest(this.test, this.testID).subscribe({
       complete() { history.back()}
