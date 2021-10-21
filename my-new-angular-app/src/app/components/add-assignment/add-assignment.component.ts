@@ -13,6 +13,7 @@ export class AddAssignmentComponent implements OnInit {
   courseID: any;
   assignmentForm: FormGroup;
   assignmentID: number;
+  assignmentID_str: string; 
   assignment: Assignment;
   current_profile = new Profile;
   profile_string: string 
@@ -84,10 +85,12 @@ export class AddAssignmentComponent implements OnInit {
         submitter: this.assignmentForm.get('submitter')!.value 
       }
       this.auth_service.addAssignment_Course(this.courseID,this.assignment).subscribe((res:any) => {
-        console.log("Successfully added Assignment")
         console.log(res)
+        this.assignmentID_str = this.assignmentID.toString()
+        if(this.fileToUpload){
+          this.auth_service.addAssignment_File(this.assignmentID_str,this.fileToUpload)
+        }
         this.router.navigate(['/course',this.courseID,'assignments'])
-        
       })
     })
     
@@ -97,18 +100,12 @@ export class AddAssignmentComponent implements OnInit {
     const element = event.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
     if(fileList){
-      console.log("FileUpload -> files", fileList)
+      console.log("FileUpload -> files", fileList[0].name)
+      this.fileToUpload = fileList[0]
+
     }
   }
-  private formatDate(date: any){
-    const d = new Date(date)
-    let month = '' + (d.getMonth() + 1);
-    let day = '' + d.getDate();
-    const year = d.getFullYear();
-    if(month.length < 2) month = '0' + month;
-    if(day.length < 2) day = '0' + day;
-    return [year,month,day].join('-');
-  }
+  
 }
 
 

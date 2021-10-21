@@ -52,6 +52,7 @@ export class QuizzesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.tests)
   }
   delete_me(x:any){
     this.authService.removeTest(x.toString()).subscribe({

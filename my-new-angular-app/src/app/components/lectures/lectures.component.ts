@@ -30,6 +30,7 @@ export class LecturesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.lectures)
   }
   delete_me(x:any){
     this.authService.deleteLecture(x.toString()).subscribe({

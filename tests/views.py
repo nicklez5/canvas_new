@@ -1,7 +1,9 @@
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.parsers import FileUploadParser
 from .models import Test
 from .serializers import SerializeTest
 from django.http import Http404
@@ -45,6 +47,7 @@ def api_detail_test_view(request,pk):
 @api_view(['PUT', 'POST', ])
 @permission_classes((IsAuthenticated, ))
 def api_update_test_view(request, pk):
+    parser_classes = (FileUploadParser,)
     try:
         test_post = Test.objects.get(pk=pk)
     except Test.DoesNotExist:
@@ -60,17 +63,16 @@ def api_update_test_view(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'POST':
-        form = TestForm(request.POST, request.FILES) 
-        if form.is_valid():
-            form.save()
-            Test_post = test_post(file=request.FILES['file'])
-            serializer = SerializeTest(Test_post,data=request.data)
-            data = {}
-            if serializer.is_valid():
-                serializer.save()
-                data['response'] = 'uploaded'
-                return Response(data=data)
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+        uploaded_file = request.FILES['file']
+        if(uploaded_file):
+            fs = FileSystemStorage()
+            name = fs.save(uploaded_file.name, uploaded_file)
+            print(name)
+            test_post.file = uploaded_file
+            test_post.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status.HTTP_400_BAD_REQUEST)
+    
     
 @api_view(['DELETE', ])
 @permission_classes((IsAdminUser, ))

@@ -10,6 +10,8 @@ import { AuthService } from 'src/app/shared/auth.service';
 })
 export class GradesComponent implements OnInit {
   headers = ['id', 'name', 'date_due', 'description', 'max_points', 'student_points', 'file', 'grade']
+  headers2 = ['Overall Grade', 'Grade Pct']
+  
   tests: Test[] = [];
   assignments: Assignment[] = [];
   grades: any[] = [];

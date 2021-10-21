@@ -11,7 +11,7 @@
         <th>{{ x.description }}</th>
         <th>{{ x.max_points }}</th>
         <th>{{ x.student_points }}</th>
-        <th>{{ x.file }}</th>
+        <th><a href="http//192.168.1.68:8081/{{ x.file }}">Download</a></th>
         <th>{{ x.student_points/x.max_points * 100}} %</th>
     </tr>
     <tr *ngFor = "let y of this.assignments">
@@ -21,9 +21,18 @@
         <th>{{ y.description }}</th>
         <th>{{ y.max_points }}</th>
         <th>{{ y.student_points }}</th>
-        <th>{{ y.file }}</th>
+        <th><a href="http://192.168.1.68:8081/{{ y.file }}">Download</a></th>
         <th>{{ y.student_points/y.max_points * 100 }} %</th>
     </tr>
-    <p id="move">Overall Grade: {{ this.overallGrade_pct }} %</p>
-    <br>
-    <p id="move2">Grade: {{this.grade_str}}</p>
+    
+    
+</table>
+<table id="users2" >
+    <tr>
+        <th *ngFor="let column2 of headers2">{{ column2 }}</th>
+    </tr>
+    <tr>
+        <th>{{this.grade_str}}</th>
+        <th>{{this.overallGrade_pct}}%</th>
+    </tr>
+</table>

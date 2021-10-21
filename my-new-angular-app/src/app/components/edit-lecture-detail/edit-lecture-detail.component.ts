@@ -14,6 +14,7 @@ export class EditLectureDetailComponent implements OnInit {
   courseID: any;
   lecture: Lecture;
   fileToUpload: File | null = null;
+  fileName: string;
   errorMsg: any;
   constructor(
     public fb: FormBuilder,
@@ -48,13 +49,18 @@ export class EditLectureDetailComponent implements OnInit {
       file: this.lectureForm.get('file')!.value
     }
     this.authService.editLecture(this.lecture,this.lectureID).subscribe()
+    if(this.fileToUpload){
+      this.authService.addLecture_File(this.lectureID, this.fileToUpload)
+    }
     this.router.navigate(['/course',this.lectureID,'lectures'])
   }
   uploadFile(event: Event){
     const element = event.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
     if(fileList){
-      console.log("FileUpload -> files", fileList)
+      console.log("FileUpload -> files", fileList[0].name)
+      this.fileName = fileList[0].name
+      this.fileToUpload = fileList[0]
     }
   }
 }

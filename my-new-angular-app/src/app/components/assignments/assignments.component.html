@@ -15,7 +15,7 @@
         <th>{{ x.max_points}}</th>
         <th>{{ x.student_points}}</th>
         <th>{{ x.description }}</th>
-        <th>{{ x.file }}</th>
+        <th><a href="http://192.168.1.65:8081/{{ x.file }}" >Download</a></th>
         <th>{{ x.submitter }}</th>
         <th *ngIf="this.auth_service.isStaff">
             <button (click)="delete_me(x.id)">Delete</button>

@@ -14,6 +14,7 @@ export class AddQuizzesComponent implements OnInit {
   testID: number;
   test: Test;
   errorMsg: any;
+  testID_str: string;
   current_profile = new Profile;
   profile_string: string
   fileToUpload: File | null = null;
@@ -76,6 +77,10 @@ export class AddQuizzesComponent implements OnInit {
         submitter: this.testForm.get('submitter')!.value 
       }
       this.auth_service.addTest_Course(this.courseID,this.test).subscribe((res:any) =>{
+        this.testID_str = this.testID.toString()
+        if(this.fileToUpload){
+          this.auth_service.addTest_File(this.testID_str, this.fileToUpload)
+        }
         this.router.navigate(['/course',this.courseID,'quizzes'])
       })
     })
@@ -86,7 +91,8 @@ export class AddQuizzesComponent implements OnInit {
     const element = event.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
     if(fileList){
-      console.log("FileUpload -> files", fileList)
+      console.log("FileUpload -> files", fileList[0].name)
+      this.fileToUpload = fileList[0]
     }
   }
 }

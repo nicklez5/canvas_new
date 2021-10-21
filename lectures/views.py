@@ -1,3 +1,4 @@
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
 from .models import Lecture
 from django.http import Http404
@@ -53,6 +54,17 @@ class LectureUpdate(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def post(self,request,pk,format=None):
+        lecture = self.get_object(pk)
+        uploaded_file = request.FILES['file']
+        if(uploaded_file):
+            fs = FileSystemStorage()
+            name = fs.save(uploaded_file.name, uploaded_file)
+            print(name)
+            lecture.file = uploaded_file
+            lecture.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status.HTTP_400_BAD_REQUEST)
 class LectureDelete(APIView):
     permission_classes = [IsAdminUser]
 

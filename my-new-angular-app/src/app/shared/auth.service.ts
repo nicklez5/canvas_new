@@ -374,5 +374,18 @@ export class AuthService {
     let api = `${this.endpoint}/assignments/update/${id}/`;
     return this.http.post<any>(api, formData).subscribe()
   }
-  
+  addLecture_File(id:string, fileToUpload: File){
+    console.log(fileToUpload.name)
+    const formData: FormData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+    let api = `${this.endpoint}/lectures/update/${id}/`;
+    return this.http.post<any>(api, formData).subscribe()
+  }
+  addTest_File(id:string, fileToUpload:File){
+    console.log(fileToUpload.name)
+    const formData: FormData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+    let api = `${this.endpoint}/tests/update/${id}/`;
+    return this.http.post<any>(api, formData).subscribe()
+  }
 }

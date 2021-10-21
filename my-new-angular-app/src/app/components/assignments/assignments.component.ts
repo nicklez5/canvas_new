@@ -48,6 +48,7 @@ export class AssignmentsComponent implements OnInit {
         x.description = res.assignments[i].description
         x.id = res.assignments[i].id
         x.file = res.assignments[i].file
+        
         x.submitter = res.assignments[i].submitter
         if(this.auth_service.isStaff){
           this.assignments.push(x);

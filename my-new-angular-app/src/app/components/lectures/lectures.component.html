@@ -11,7 +11,7 @@
         <th>{{ x.id }} </th>
         <th>{{ x.name }}</th>
         <th>{{ x.description }} </th>
-        <th>{{ x.file }} </th>
+        <th><a href="http://192.168.56.1:8081/{{ x.file }}">Download</a> </th>
         <th *ngIf="this.authService.isStaff">
             <button (click)="delete_me(x.id)">Delete</button>
             <button [routerLink]="['/course', this.courseID,'lectures',x.id,'edit']">Edit</button>

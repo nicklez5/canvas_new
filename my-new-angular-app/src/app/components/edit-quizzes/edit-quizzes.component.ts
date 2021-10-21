@@ -60,15 +60,19 @@ export class EditQuizzesComponent implements OnInit {
       file: this.testForm.get('file')!.value,
       submitter: this.testForm.get('submitter')!.value 
     }
-    this.authService.editTest(this.test, this.testID).subscribe({
-      complete() { history.back()}
-    })
+
+    this.authService.editTest(this.test, this.testID).subscribe()
+    if(this.fileToUpload){
+      this.authService.addTest_File(this.testID, this.fileToUpload)
+    }
+    this.router.navigate(['/course',this.courseID,'quizzes'])
   }
   uploadFile(event: Event){
     const element = event.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
     if(fileList){
-      console.log("FileUpload -> files", fileList)
+      console.log("FileUpload -> files", fileList[0].name)
+      this.fileToUpload = fileList[0]
     }
   }
   

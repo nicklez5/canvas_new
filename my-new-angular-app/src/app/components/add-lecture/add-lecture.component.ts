@@ -12,6 +12,7 @@ export class AddLectureComponent implements OnInit {
   courseID: any;
   lectureForm: FormGroup;
   lectureID: number;
+  lectureID_str: string;
   lecture: Lecture;
   errorMsg: any;
   fileToUpload: File | null = null;
@@ -43,6 +44,10 @@ export class AddLectureComponent implements OnInit {
     }
     this.auth_service.addLecture_Course(this.courseID, this.lecture).subscribe((res:any) => {
       console.log(res)
+      this.lectureID_str = this.lectureID.toString()
+      if(this.fileToUpload){
+        this.auth_service.addLecture_File(this.lectureID_str, this.fileToUpload)
+      }
       this.router.navigate(['/course',this.courseID,'lectures'])
     })
   }
@@ -51,7 +56,8 @@ export class AddLectureComponent implements OnInit {
     const element = event.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
     if(fileList){
-      console.log("FileUpload -> files", fileList)
+      console.log("FileUpload -> files", fileList[0].name)
+      this.fileToUpload = fileList[0]
     }
   }
 }

@@ -22,6 +22,7 @@ h1{
     background-color: blueviolet;
     color: white;
 }
+
 #move {
     position: absolute;
     left: 1425px;
@@ -29,4 +30,24 @@ h1{
 #move2 {
     position: absolute;
     left: 1500px;
+}
+#users2 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#users2 td, #users2 th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#users2 tr:nth-child(even){background-color: #f2f2f2;}
+#users2 tr:hover {background-color: #ddd;}
+#users2 th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: rgb(106, 69, 117);
+    color: white;
 }
