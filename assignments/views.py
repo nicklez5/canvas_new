@@ -20,7 +20,7 @@ def api_assignment_list(request):
         return Response(serializer.data)
 
 @api_view(['POST'])
-@permission_classes((IsAdminUser, ))
+@permission_classes((IsAuthenticated, ))
 def api_create_assignment(request):
     
     if request.method == 'POST':

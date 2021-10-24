@@ -20,7 +20,7 @@ export class AssignmentsComponent implements OnInit {
     private actRoute: ActivatedRoute,
     private router: Router
   ) { 
-    let id = this.actRoute.snapshot.paramMap.get('id')
+    this.courseID = this.actRoute.snapshot.paramMap.get('id')
     let profile_id = this.auth_service.getPk()
     this.auth_service.getUserProfile(profile_id!).subscribe((res:any) => {
       this.current_profile.pk = res.pk
@@ -29,36 +29,38 @@ export class AssignmentsComponent implements OnInit {
       
       this.current_profile.email = res.email
       this.current_profile.date_of_birth = res.date_of_birth 
-    })
-    
-    this.submitter = this.current_profile.first_name + " " + this.current_profile.last_name  
-    
-    this.courseID = id;
-    this.auth_service.getCourse(id!).subscribe(res => {
-      for(let i = 0; i < res.assignments.length; i++){
-        var x = new Assignment()
-        x.name = res.assignments[i].name
-        x.date_due = res.assignments[i].date_due
-        x.max_points = res.assignments[i].max_points
-        if(!res.assignments[i].student_points){
-          x.student_points = 0
-        }else{
-          x.student_points = res.assignments[i].student_points
-        }
-        x.description = res.assignments[i].description
-        x.id = res.assignments[i].id
-        x.file = res.assignments[i].file
-        
-        x.submitter = res.assignments[i].submitter
-        if(this.auth_service.isStaff){
-          this.assignments.push(x);
-        }else{
-          if(this.submitter == x.submitter || this.submitter == "Jackson Lu"){
-            this.assignments.push(x) 
+
+      this.submitter = this.current_profile.first_name + " " + this.current_profile.last_name
+      this.auth_service.getCourse(this.courseID!).subscribe(res => {
+        for(let i = 0; i < res.assignments.length; i++){
+          var x = new Assignment()
+          x.name = res.assignments[i].name
+          x.date_due = res.assignments[i].date_due
+          x.max_points = res.assignments[i].max_points
+          if(!res.assignments[i].student_points){
+            x.student_points = 0
+          }else{
+            x.student_points = res.assignments[i].student_points
+          }
+          x.description = res.assignments[i].description
+          x.id = res.assignments[i].id
+          x.file = res.assignments[i].file 
+          x.submitter = res.assignments[i].submitter
+          if(this.auth_service.isStaff){
+            this.assignments.push(x);
+          }else{
+            if(this.submitter == x.submitter || x.submitter == "Jackson Lu"){
+              this.assignments.push(x) 
+            }
           }
         }
-      }
-    }) 
+      }) 
+    })
+    
+      
+    
+    
+    
       console.log(this.assignments)
       
   }

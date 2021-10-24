@@ -100,7 +100,7 @@ class CourseAddLecture(APIView):
 
 
 class CourseAddAssignment(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self,pk):
         try:
@@ -197,7 +197,7 @@ class CourseDelete(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class CourseAddTest(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self,pk):
         try:

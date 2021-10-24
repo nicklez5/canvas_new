@@ -1,9 +1,9 @@
 <div class="auth-wrapper">
     <form class="form-signin" [formGroup]="assignmentForm" (ngSubmit)="addAssignment()">
         <h3 class="h3 mb-3 font-weight-normal text-center">Submit Assignment</h3>
-        <div class="form-group">
-            <label for="file">Choose File</label>
-            <input type="file" formControlName="file" (change)="uploadFile($event)">
+        <label>Assignment Name: {{ this.assignment.name }}</label>
+        <div class="form-group">            
+            <input type="file"  (change)="uploadFile($event)">
         </div>
         <button type="submit" class="btn btn-block btn-primary">Add</button>
     </form>

@@ -14,7 +14,7 @@ export class AddAssignmentComponent implements OnInit {
   assignmentForm: FormGroup;
   assignmentID: number;
   assignmentID_str: string; 
-  assignment: Assignment;
+  assignment = new Assignment;
   current_profile = new Profile;
   profile_string: string 
   errorMsg: any;

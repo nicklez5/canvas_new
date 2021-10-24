@@ -21,7 +21,7 @@ def api_test_list(request):
         return Response(serializer.data)
 
 @api_view(['POST'])
-@permission_classes((IsAdminUser, ))
+@permission_classes((IsAuthenticated, ))
 def api_create_test(request):
 
     if request.method == 'POST':

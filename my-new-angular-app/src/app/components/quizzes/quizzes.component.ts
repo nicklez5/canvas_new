@@ -41,7 +41,7 @@ export class QuizzesComponent implements OnInit {
           if(this.authService.isStaff){
             this.tests.push(y)
           }else{
-            if(this.submitter == y.submitter || this.submitter == "Jackson Lu"){
+            if(this.submitter == y.submitter || y.submitter == "Jackson Lu"){
               this.tests.push(y)
             }
           }

@@ -61,8 +61,9 @@ export class DiscussionAddComponent implements OnInit {
           description: this.messageForm.get('description')!.value,
           timestamp: this.date
         }
-        this.messages.push(this.message)
         this.auth_service.addMessage(this.message).subscribe()
+        this.messages.push(this.message)
+
         this.thread = {
           id: this.threadID,
           list_messages: this.messages,
@@ -71,6 +72,7 @@ export class DiscussionAddComponent implements OnInit {
           last_timestamp: this.date
         }
         this.auth_service.addThread(this.thread).subscribe()
+        this.auth_service.addMessageThread(this.thread, this.message, this.threadID.toString()).subscribe()
         this.auth_service.addThread_Course(this.thread, this.courseID).subscribe({
           complete() {history.back()}
         })

@@ -39,7 +39,9 @@ export class AddStudentComponent implements OnInit {
     this.studentForm.get('last_name')!.value,
     this.studentForm.get('email')!.value,
     this.studentForm.get('date_of_birth')!.value,
-    this.courseID).subscribe() 
+    this.courseID).subscribe({
+      complete() { history.back()}
+    }) 
   }
 
 }

@@ -5,7 +5,7 @@ class Test(models.Model):
     id = models.IntegerField(primary_key=True)
     description = models.TextField(blank=True)
     date_due = models.DateTimeField(null=True,blank=True)
-    name = models.CharField(max_length=100,unique=True)
+    name = models.CharField(max_length=100,unique=False)
     submitter = models.CharField(max_length=100,unique=False)
     file = models.FileField(upload_to='tests/',blank=True,null=True)
     max_points = models.IntegerField(null=True,blank=True)

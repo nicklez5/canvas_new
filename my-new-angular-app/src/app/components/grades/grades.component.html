@@ -13,6 +13,7 @@
         <th>{{ x.student_points }}</th>
         <th><a href="http//192.168.1.68:8081/{{ x.file }}">Download</a></th>
         <th>{{ x.student_points/x.max_points * 100}} %</th>
+        <th>{{ x.submitter}}</th>
     </tr>
     <tr *ngFor = "let y of this.assignments">
         <th>{{ y.id }} </th>
@@ -23,6 +24,7 @@
         <th>{{ y.student_points }}</th>
         <th><a href="http://192.168.1.68:8081/{{ y.file }}">Download</a></th>
         <th>{{ y.student_points/y.max_points * 100 }} %</th>
+        <th>{{ y.submitter }}</th>
     </tr>
     
     

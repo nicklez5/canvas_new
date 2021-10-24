@@ -16,7 +16,7 @@ class MessageList(APIView):
         return Response(serializer.data)
 
 class MessagePost(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     def post(self, request, format=None):
         serializer = SerializeMessage(data=request.data)
         if serializer.is_valid():
